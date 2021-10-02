@@ -2,7 +2,7 @@ import { ComplexityList } from "./types";
 
 export const complexity: ComplexityList = {
     beginner: {
-        name: 'Beginner',
+        name: 'beginner',
         bombCount: 10,
         fieldSize: {
             width: 10,
@@ -10,7 +10,7 @@ export const complexity: ComplexityList = {
         },
     },
     easy: {
-        name: 'Easy',
+        name: 'easy',
         bombCount: 15,
         fieldSize: {
             width: 5,
@@ -18,7 +18,7 @@ export const complexity: ComplexityList = {
         },
     },
     medium: {
-        name: 'Medium',
+        name: 'medium',
         bombCount: 40,
         fieldSize: {
             width: 10,
@@ -26,7 +26,7 @@ export const complexity: ComplexityList = {
         },
     },
     hard: {
-        name: 'Hard',
+        name: 'hard',
         bombCount: 100,
         fieldSize: {
             width: 20,
@@ -34,7 +34,7 @@ export const complexity: ComplexityList = {
         },  
     },
     huge: {
-        name: 'Huge',
+        name: 'huge',
         bombCount: 220,
         fieldSize: {
             width: 30,
@@ -42,7 +42,7 @@ export const complexity: ComplexityList = {
         },  
     },
     extreme: {
-        name: 'Extreme',
+        name: 'extreme',
         bombCount: 150,
         fieldSize: {
             width: 20,
