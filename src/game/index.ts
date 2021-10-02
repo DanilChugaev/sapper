@@ -6,7 +6,7 @@ export class Sapper implements Game {
         private settings: GameSettings,
     ) {}
 
-    start() {
+    public start() {
         console.log(this.settings);
     }
 }

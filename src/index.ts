@@ -7,4 +7,6 @@ import { Sapper } from "./game/index";
 import { settings } from "./settings/index";
 
 const sapper = new Sapper(settings);
-sapper.start();
+
+// стартуем, когда нажмем кнопку старт
+//sapper.start();
