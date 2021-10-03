@@ -1,12 +1,18 @@
-// настройки
-    // тип
-    // дефолтные значения
-// инициализация поля
-// работа с канвас
+import { CanvasContextProvider } from "./context/index";
+import { DomSource } from "./dom/index";
+import { CanvasDrawer } from "./drawer/index";
 import { Sapper } from "./game/index";
 import { settings } from "./settings/index";
 
-const sapper = new Sapper(settings);
+const pixelRatioSource = {
+    devicePixelRatio: 1,
+}
 
+const domSource = new DomSource(window);
+const contextProvider = new CanvasContextProvider(domSource, pixelRatioSource, settings);
+const drawer = new CanvasDrawer(contextProvider);
+const sapper = new Sapper(settings, drawer, domSource);
+
+sapper.init();
 // стартуем, когда нажмем кнопку старт
 //sapper.start();

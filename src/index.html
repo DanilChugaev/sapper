@@ -14,9 +14,49 @@
     *::after {
       box-sizing: border-box;
     }
+
+    html, body {
+      height: 100vh;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #339999;
+    }
+
+    #canvas {
+      display: none;
+    }
+
+    #start_game {
+      padding: 10px 15px;
+      margin: 0;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 16px;
+      background-color: transparent;
+      cursor: pointer;
+      background-color: #dae9f6;
+      color: #296fa8;
+    }
+
+    #start_game:hover {
+      background-color: #e4eff9;
+      color: #296fa8;
+    }
+
+    #select_level {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
+  <button type="button" id="start_game">Играть</button>
+  <select name="level" id="select_level"></select>
+  
   <canvas id="canvas"></canvas>
 </body>
 </html>

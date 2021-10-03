@@ -1,6 +1,6 @@
 import { ComplexityList } from "./types";
 
-export const complexity: ComplexityList = {
+export const levels: ComplexityList = {
     beginner: {
         name: 'beginner',
         bombCount: 10,

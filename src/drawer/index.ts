@@ -5,7 +5,9 @@ import { BrushSettings, Drawer } from "./types";
 export class CanvasDrawer implements Drawer {
     private context: DrawingContext = null;
   
-    constructor(private contextProvider: DrawingContextProvider) {
+    constructor(
+      private contextProvider: DrawingContextProvider
+    ) {
       this.context = this.contextProvider.getInstance();
       if (!this.context) throw new Error("Failed to access the drawing context.");
     }
