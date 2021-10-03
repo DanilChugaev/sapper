@@ -8,6 +8,7 @@ export const levels: ComplexityList = {
             width: 10,
             height: 20,
         },
+        selected: false,
     },
     easy: {
         name: 'easy',
@@ -16,6 +17,7 @@ export const levels: ComplexityList = {
             width: 5,
             height: 10,
         },
+        selected: true,
     },
     medium: {
         name: 'medium',
@@ -24,6 +26,7 @@ export const levels: ComplexityList = {
             width: 10,
             height: 20,
         },
+        selected: false,
     },
     hard: {
         name: 'hard',
@@ -31,7 +34,8 @@ export const levels: ComplexityList = {
         fieldSize: {
             width: 20,
             height: 30,
-        },  
+        },
+        selected: false,
     },
     huge: {
         name: 'huge',
@@ -39,7 +43,8 @@ export const levels: ComplexityList = {
         fieldSize: {
             width: 30,
             height: 50,
-        },  
+        },
+        selected: false,
     },
     extreme: {
         name: 'extreme',
@@ -47,6 +52,7 @@ export const levels: ComplexityList = {
         fieldSize: {
             width: 20,
             height: 30,
-        },  
+        },
+        selected: false,
     },
 }

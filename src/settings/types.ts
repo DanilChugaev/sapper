@@ -13,6 +13,7 @@ export type Complexity = {
     name: string;
     bombCount: number,
     fieldSize: Size,
+    selected: Boolean,
 };
 
 /** Основные настройки игры */

@@ -21,16 +21,23 @@ export class Sapper implements Game {
             const levels = this.settings.levels;
 
             for (let key in levels) {
-                const option = <HTMLSelectElement>this.elementSource.createElement('option');
+                const option = <HTMLOptionElement>this.elementSource.createElement('option');
 
                 option.textContent = key;
                 option.value = key;
+                // @ts-ignore
+                option.selected = levels[key].selected;
+
+                // TODO: вынести appendChild в DomSource
                 this.select.appendChild(option);
             }
+
+            // TODO: вынести addEventListener в DomSource
+            this.button.addEventListener('click', this.start, false);
         });
     }
 
-    public start() {
+    private start() {
         console.log(this.settings);
     }
 }

@@ -1,3 +1,3 @@
 export interface Game {
-    start(): void;
+    init(): void;
 }
