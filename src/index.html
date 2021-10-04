@@ -13,6 +13,7 @@
     *::before,
     *::after {
       box-sizing: border-box;
+      font-family: sans-serif;
     }
 
     html, body {
@@ -27,12 +28,13 @@
       background-color: #339999;
     }
 
-    #canvas {
+    .canvas {
       display: none;
       border-radius: 6px;
+      margin-top: 5px;
     }
 
-    #start_game {
+    .start-game {
       padding: 10px 15px;
       margin: 0;
       border: 1px solid transparent;
@@ -45,21 +47,40 @@
       margin-top: 10px;
     }
 
-    #start_game:hover {
+    .start-game:hover {
       background-color: #e4eff9;
       color: #296fa8;
     }
 
-    #select_level {
+    .select-level {
       margin-top: 10px;
     }
+
+    .game {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game__count-bomb {
+      margin-top: 5px;
+    }
+
+    .game__time {
+      margin-top: 5px;
+    }
+
   </style>
 </head>
 <body>
   <h1>Сапер</h1>
-  <button type="button" id="start_game">Играть</button>
-  <select name="level" id="select_level"></select>
+  <button type="button" id="start-game" class="start-game">Играть</button>
+  <select name="level" id="select-level" class="select-level"></select>
   
-  <canvas id="canvas"></canvas>
+  <div id="game-container" class="game">
+    <div class="game__count-bomb">кол-во бомб</div>
+    <div class="game__time">сколько времени решал</div>
+    <canvas id="canvas" class="canvas"></canvas>
+  </div>
 </body>
 </html>

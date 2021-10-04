@@ -14,5 +14,3 @@ const drawer = new CanvasDrawer(contextProvider);
 const sapper = new Sapper(settings, drawer, domSource);
 
 sapper.init();
-// стартуем, когда нажмем кнопку старт
-//sapper.start();
