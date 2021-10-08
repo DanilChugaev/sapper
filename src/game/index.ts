@@ -1,3 +1,4 @@
+import { SystemBuilder } from '../builder/types';
 import { ElementSource } from '../dom/types';
 import { Drawer } from '../drawer/types';
 import { GameSettings } from '../settings/types';
@@ -8,29 +9,33 @@ export class Sapper implements Game {
     private button: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
-    private levels: any;
 
     constructor(
         private settings: GameSettings,
         private drawer: Drawer,
         private elementSource: ElementSource,
+        private builder: SystemBuilder,
     ) {
         this.select = <HTMLSelectElement>elementSource.getElement('select-level');
         this.button = elementSource.getElement('start-game');
         this.gameContainer = elementSource.getElement('game-container');
         this.canvas = elementSource.getElement('canvas');
-
-        this.levels = this.settings.levels;
     }
 
-    public init() {
+    /**
+     * Инициализируем данные игры
+     * 
+     * @returns {void}
+     */
+    public init(): void {
         this.elementSource.afterLoad((event: Event) => {
-            for (let key in this.levels) {
+            for (let key in this.settings.levels) {
                 const option = <HTMLOptionElement>this.elementSource.createElement('option');
 
                 option.textContent = key;
                 option.value = key;
-                option.selected = this.levels[key].selected;
+                // @ts-ignore
+                option.selected = this.settings.levels[key].selected;
 
                 this.select.appendChild(option);
             }
@@ -41,8 +46,13 @@ export class Sapper implements Game {
         });
     }
 
-    private start() {
-        // сделать билд уровня
+    /**
+     * Стартуем игру
+     * 
+     * @returns {void}
+     */
+    private start(): void {
+        const system = this.builder.build(this.settings);
         this.changeVisibilityElements();
 
         // console.log(this.settings);
@@ -54,15 +64,28 @@ export class Sapper implements Game {
         // });
     }
 
+    /**
+     * Меняет уровень после смены в селекте
+     * 
+     * @param {Event} event - DOM событие
+     * 
+     * @returns {void}
+     */
     private changeLevel(event: Event): void {
-        for (let key in this.levels) {
-            this.levels[key].selected = false;
+        for (let key in this.settings.levels) {
+            // @ts-ignore
+            this.settings.levels[key].selected = false;
         }
 
         // @ts-ignore
-        this.levels[event.target.value].selected = true;
+        this.settings.levels[event.target.value].selected = true;
     }
 
+    /**
+     * Меняет видимость игровых элементов на странице
+     * 
+     * @returns {void}
+     */
     private changeVisibilityElements(): void {
         this.button.style.display = 'none';
         this.select.style.display = 'none';

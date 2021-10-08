@@ -12,7 +12,7 @@ export type ComplexityList = {
 export type Complexity = {
     name: string;
     bombCount: number,
-    fieldSize: Size,
+    fieldSize: number,
     selected: Boolean,
 };
 
