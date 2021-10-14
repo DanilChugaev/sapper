@@ -6,6 +6,8 @@ import { Sapper } from "./game/index";
 import { Generator } from "./generator/index";
 import { settings } from "./settings/index";
 
+import "./index.scss";
+
 const pixelRatioSource = {
     devicePixelRatio: 1,
 }
