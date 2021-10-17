@@ -1,4 +1,4 @@
-import { SystemBuilder } from '../builder/types';
+import { MapStructure, SystemBuilder } from '../builder/types';
 import { ElementSource } from '../dom/types';
 import { Drawer } from '../drawer/types';
 import { GameSettings } from '../settings/types';
@@ -9,6 +9,7 @@ export class Sapper implements Game {
     private button: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
+    private system: MapStructure;
 
     constructor(
         private settings: GameSettings,
@@ -52,8 +53,10 @@ export class Sapper implements Game {
      * @returns {void}
      */
     private start(): void {
-        const system = this.builder.build(this.settings);
+        this.system = this.builder.build(this.settings);
         this.changeVisibilityElements();
+        // debugger
+        this.generateInitialMap();
 
         // console.log(this.settings);
         // this.drawer.drawLine({
@@ -91,5 +94,23 @@ export class Sapper implements Game {
         this.select.style.display = 'none';
         this.gameContainer.style.display = 'flex';
         this.canvas.style.display = 'block';
+    }
+
+    private generateInitialMap() {
+        const cells: any = this.system.cells;
+        const pixelsCountInCell: number = this.system.pixelsCountInCell;
+        const size: Size = {
+            width: pixelsCountInCell,
+            height: pixelsCountInCell,
+        }
+
+        for (let row in cells) {
+            for (let cell in cells[row]) {
+                this.drawer.drawSquare({
+                    x: Number(cell) * pixelsCountInCell,
+                    y: Number(row) * pixelsCountInCell,
+                }, size);
+            }
+        }
     }
 }

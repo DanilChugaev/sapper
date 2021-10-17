@@ -26,4 +26,11 @@ export class CanvasDrawer implements Drawer {
       this.context.lineTo(end.x, end.y);
       this.context.stroke();
     }
+
+    public drawSquare({ x, y }: Cell, { width, height }: Size): void {
+      if (!this.context) return;
+
+      this.context.fillStyle = "#6666FF"
+      this.context.fillRect(x, y, width, height)
+    }
   }

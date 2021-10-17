@@ -53,7 +53,7 @@ export class LevelBuilder implements SystemBuilder {
      * @returns {MapStructure}
      */
     private generateMapStructure(canvasSize: Size, { fieldSize, bombCount }: Complexity): MapStructure {
-        const mapStructure: any = {
+        const mapStructure: MapStructure = {
             pixelsCountInCell: canvasSize.width / fieldSize,
             bombCount,
             cells: {},
@@ -63,15 +63,19 @@ export class LevelBuilder implements SystemBuilder {
 
         for (let y = 0; y < fieldSize; y++) {
             for (let x = 0; x < fieldSize; x++) {
-                if (!mapStructure.cells[y]) {
-                    mapStructure.cells[y] = {};
+                const row: number = y;
+                const cell: number = x;
+
+                if (!mapStructure.cells[row]) {
+                    mapStructure.cells[row] = {};
                 }
                 
                 const hasBomb: boolean = bombPositions.includes(x + y * fieldSize);
                 const area: AreaStructure = this.generateCellArea({ x, y });
 
                 const cellStructure: any = {
-                    x, y,
+                    y: row, 
+                    x: cell,
                     area,
                 }
 
@@ -81,7 +85,7 @@ export class LevelBuilder implements SystemBuilder {
                     cellStructure.value = this.calcBombsAroundCells(area, bombPositions, fieldSize);
                 }
 
-                mapStructure.cells[y][x] = cellStructure;
+                mapStructure.cells[row][cell] = cellStructure;
             }
         }
 
