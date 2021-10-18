@@ -17,6 +17,6 @@ const contextProvider = new CanvasContextProvider(domSource, pixelRatioSource, s
 const drawer = new CanvasDrawer(contextProvider);
 const generator = new Generator(Math.random, Math.floor);
 const builder = new LevelBuilder(generator);
-const sapper = new Sapper(settings, drawer, domSource, builder);
+const sapper = new Sapper(settings, contextProvider, drawer, domSource, builder, generator);
 
 sapper.init();

@@ -1,11 +1,11 @@
 import { Complexity, ComplexityList, GameSettings } from "../settings/types";
 import { AreaStructure, MapStructure, SystemBuilder } from "./types";
 import { AREA_STRUCTURE } from "./constants";
-import { RandomGenerator } from "../generator/types";
+import { MathGenerator } from "../generator/types";
 
 export class LevelBuilder implements SystemBuilder {
     constructor(
-        private generator: RandomGenerator,
+        private generator: MathGenerator,
     ) {}
 
     /**

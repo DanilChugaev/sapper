@@ -3,7 +3,7 @@ import { GameSettings } from "../settings/types";
 import { DrawingContext, DrawingContextProvider } from "./types";
 
 export class CanvasContextProvider implements DrawingContextProvider {
-    private element: Nullable<HTMLCanvasElement> = null;
+    private canvas: Nullable<HTMLCanvasElement> = null;
     private context: Nullable<DrawingContext> = null;
   
     constructor(
@@ -11,29 +11,34 @@ export class CanvasContextProvider implements DrawingContextProvider {
       private pixelRatioSource: PixelRatioSource,
       private settings: GameSettings
     ) {
-      const element = this.elementSource.getElement("canvas");
-      if (!element) throw new Error("Failed to find a canvas.");
+      const canvas = this.elementSource.getElement("canvas");
+      if (!canvas) throw new Error("Failed to find a canvas.");
   
-      this.element = element as HTMLCanvasElement;
-      this.context = this.element.getContext("2d");
+      this.canvas = canvas as HTMLCanvasElement;
+      this.context = this.canvas.getContext("2d");
       this.normalizeScale();
     }
   
     public getInstance(): DrawingContext {
       return this.context;
     }
+
+    public listenCanvasClick(callback: Function): void {
+      // @ts-ignore
+      this.canvas.addEventListener("click", callback);
+    }
   
     private normalizeScale(): void {
-      if (!this.element || !this.context) return;
+      if (!this.canvas || !this.context) return;
   
       const ratio = this.pixelRatioSource.devicePixelRatio || 1;
       const { width, height } = this.settings.canvasSize;
   
-      this.element.width = width * ratio;
-      this.element.height = height * ratio;
+      this.canvas.width = width * ratio;
+      this.canvas.height = height * ratio;
   
-      this.element.style.width = `${width}px`;
-      this.element.style.height = `${height}px`;
+      this.canvas.style.width = `${width}px`;
+      this.canvas.style.height = `${height}px`;
   
       this.context.imageSmoothingEnabled = false;
       this.context.scale(ratio, ratio);

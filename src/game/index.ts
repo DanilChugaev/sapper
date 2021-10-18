@@ -1,6 +1,8 @@
 import { MapStructure, SystemBuilder } from '../builder/types';
+import { DrawingContextProvider } from '../context/types';
 import { ElementSource } from '../dom/types';
 import { Drawer } from '../drawer/types';
+import { MathGenerator } from '../generator/types';
 import { GameSettings } from '../settings/types';
 import { Game } from "./types";
 
@@ -13,9 +15,11 @@ export class Sapper implements Game {
 
     constructor(
         private settings: GameSettings,
+        private contextProvider: DrawingContextProvider,
         private drawer: Drawer,
         private elementSource: ElementSource,
         private builder: SystemBuilder,
+        private generator: MathGenerator,
     ) {
         this.select = <HTMLSelectElement>elementSource.getElement('select-level');
         this.button = elementSource.getElement('start-game');
@@ -55,16 +59,8 @@ export class Sapper implements Game {
     private start(): void {
         this.system = this.builder.build(this.settings);
         this.changeVisibilityElements();
-        // debugger
         this.generateInitialMap();
-
-        // console.log(this.settings);
-        // this.drawer.drawLine({
-        //     start: { x: 10, y: 10 },
-        //     end: { x: 100, y: 100 },
-        // }, {
-        //     width: 3,
-        // });
+        this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
     }
 
     /**
@@ -111,6 +107,18 @@ export class Sapper implements Game {
                     y: Number(row) * pixelsCountInCell,
                 }, size);
             }
+        }
+    }
+
+    private checkClick({ offsetX, offsetY }: MouseEvent): void {
+        const cell: Cell = this.getCell(offsetX, offsetY);
+        // debugger
+    }
+
+    private getCell(offsetX: number, offsetY: number): Cell {
+        return {
+            x: this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell),
+            y: this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell),
         }
     }
 }

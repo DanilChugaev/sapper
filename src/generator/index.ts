@@ -1,6 +1,6 @@
-import { RandomGenerator } from "./types";
+import { MathGenerator } from "./types";
 
-export class Generator implements RandomGenerator {
+export class Generator implements MathGenerator {
     constructor(
         private getRandom: Function,
         private getFloor: Function,
@@ -25,7 +25,7 @@ export class Generator implements RandomGenerator {
      * 
      * @returns {number}
      */
-    private getFloorNumber(n: number): number {
+     public getFloorNumber(n: number): number {
         return this.getFloor(n);
     }
 }
