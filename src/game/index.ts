@@ -59,7 +59,7 @@ export class Sapper implements Game {
     private start(): void {
         this.system = this.builder.build(this.settings);
         this.changeVisibilityElements();
-        this.generateInitialMap();
+        this.makeInitialFill();
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
     }
 
@@ -92,22 +92,23 @@ export class Sapper implements Game {
         this.canvas.style.display = 'block';
     }
 
-    private generateInitialMap() {
-        const cells: any = this.system.cells;
-        const pixelsCountInCell: number = this.system.pixelsCountInCell;
-        const size: Size = {
-            width: pixelsCountInCell,
-            height: pixelsCountInCell,
-        }
+    private makeInitialFill() {
+        const size: Size = this.settings.canvasSize;
 
-        for (let row in cells) {
-            for (let cell in cells[row]) {
-                this.drawer.drawSquare({
-                    x: Number(cell) * pixelsCountInCell,
-                    y: Number(row) * pixelsCountInCell,
-                }, size);
-            }
-        }
+        // for (let row in cells) {
+        //     for (let cell in cells[row]) {
+        //         this.drawer.drawSquare({
+        //             x: Number(cell) * pixelsCountInCell,
+        //             y: Number(row) * pixelsCountInCell,
+        //         }, size);
+        //     }
+        // }
+        
+        /** заполняем весь канвас по умолчанию */
+        this.drawer.drawSquare({
+            x: 0,
+            y: 0,
+        }, size);
     }
 
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
