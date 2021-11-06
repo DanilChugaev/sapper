@@ -10,6 +10,9 @@ export class CanvasDrawer implements Drawer {
     ) {
       this.context = this.contextProvider.getInstance();
       if (!this.context) throw new Error("Failed to access the drawing context.");
+
+      // this.bomb = sourceProvider.getImage('bomb');
+      // this.flag = sourceProvider.getImage('flag');
     }
   
     public drawLine(
@@ -27,10 +30,37 @@ export class CanvasDrawer implements Drawer {
       this.context.stroke();
     }
 
-    public drawSquare({ x, y }: Cell, { width, height }: Size): void {
+    public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string): void {
       if (!this.context) return;
 
-      this.context.fillStyle = "#6666FF"
+      this.context.fillStyle = color ? color : "#6666FF";
       this.context.fillRect(x, y, width, height)
     }
+
+    public drawNumber({ x, y }: Cell, { width, height }: Size, value: number): void {
+      this.drawSquare({ x, y }, { width, height }, '#212121');
+      // this.drawBorders({ x, y }, { width, height }, 'lightgrey')
+      // нарисовать бордеры
+
+      this.context.font = `${height / 2}px Arial`;
+		  this.context.fillStyle = 'white';
+      this.context.fillText(String(value), x + (width / 2.5), y + (height / 1.5))
+    }
+
+    public drawBomb({ x, y }: Cell, { width, height }: Size): void {
+
+    }
+
+    // private drawBorders({ x, y }: Cell, { width, height }: Size, color: string): void {
+    //   this.drawLine({
+    //     start: {
+    //       x: x,
+    //       y: y,
+    //     },
+    //     end: {
+    //       x: x + width,
+    //       y: y,
+    //     },
+    //   }, { color })
+    // }
   }

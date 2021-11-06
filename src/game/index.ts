@@ -12,6 +12,7 @@ export class Sapper implements Game {
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
+    private cellSize: Size;
 
     constructor(
         private settings: GameSettings,
@@ -58,6 +59,10 @@ export class Sapper implements Game {
      */
     private start(): void {
         this.system = this.builder.build(this.settings);
+        this.cellSize = {
+            width: this.system.pixelsCountInCell,
+            height: this.system.pixelsCountInCell,
+        }
         this.changeVisibilityElements();
         this.makeInitialFill();
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
@@ -92,6 +97,11 @@ export class Sapper implements Game {
         this.canvas.style.display = 'block';
     }
 
+    /**
+     * Заполняет весь канвас по умолчанию
+     * 
+     * @returns {void}
+     */
     private makeInitialFill() {
         const size: Size = this.settings.canvasSize;
 
@@ -104,7 +114,6 @@ export class Sapper implements Game {
         //     }
         // }
         
-        /** заполняем весь канвас по умолчанию */
         this.drawer.drawSquare({
             x: 0,
             y: 0,
@@ -112,8 +121,33 @@ export class Sapper implements Game {
     }
 
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
-        const cell: Cell = this.getCell(offsetX, offsetY);
+        const cellCoord: Cell = this.getCell(offsetX, offsetY);
+        const cell = this.system.cells[cellCoord.y][cellCoord.x];
         // debugger
+        
+        if (cell.hasBomb) {
+            // рисуем бомбу в указанной клетке на темной фоне
+            // рисуем все остальные бомбы на синем фоне
+            // стопорим игру
+        } else if (cell.value !== 0) {
+            // рисуем клетку с цифрой
+            this.drawer.drawNumber({
+                x: Number(cellCoord.x) * this.cellSize.width,
+                y: Number(cellCoord.y) * this.cellSize.height,
+            }, this.cellSize, cell.value);
+        } else {
+            // this.drawer.drawNumber({
+            //     x: Number(cellCoord.x) * this.cellSize.width,
+            //     y: Number(cellCoord.y) * this.cellSize.height,
+            // }, this.cellSize, cell.value);
+            // рисуем пустую клетку
+            // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
+        }
+
+        // this.drawer.drawSquare({
+        //     x: Number(cellCoord.x) * pixelsCountInCell,
+        //     y: Number(cellCoord.y) * pixelsCountInCell,
+        // }, size, '#fff');
     }
 
     private getCell(offsetX: number, offsetY: number): Cell {
