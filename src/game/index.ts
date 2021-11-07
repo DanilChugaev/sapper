@@ -1,6 +1,7 @@
 import { MapStructure, SystemBuilder } from '../builder/types';
 import { DrawingContextProvider } from '../context/types';
 import { ElementSource } from '../dom/types';
+import { MAIN_BG_COLOR } from '../drawer/constants';
 import { Drawer } from '../drawer/types';
 import { MathGenerator } from '../generator/types';
 import { GameSettings } from '../settings/types';
@@ -123,25 +124,28 @@ export class Sapper implements Game {
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
         const cellCoord: Cell = this.getCell(offsetX, offsetY);
         const cell = this.system.cells[cellCoord.y][cellCoord.x];
-        // debugger
+
+        const xDrawCoord = Number(cellCoord.x) * this.cellSize.width;
+        const yDrawCoord = Number(cellCoord.y) * this.cellSize.height;
         
         if (cell.hasBomb) {
-            // рисуем бомбу в указанной клетке на темной фоне
+            // рисуем бомбу в указанной клетке на темном фоне
             // рисуем все остальные бомбы на синем фоне
             // стопорим игру
         } else if (cell.value !== 0) {
             // рисуем клетку с цифрой
             this.drawer.drawNumber({
-                x: Number(cellCoord.x) * this.cellSize.width,
-                y: Number(cellCoord.y) * this.cellSize.height,
+                x: xDrawCoord,
+                y: yDrawCoord,
             }, this.cellSize, cell.value);
         } else {
-            // this.drawer.drawNumber({
-            //     x: Number(cellCoord.x) * this.cellSize.width,
-            //     y: Number(cellCoord.y) * this.cellSize.height,
-            // }, this.cellSize, cell.value);
             // рисуем пустую клетку
             // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
+            this.drawer.drawSquare({
+                x: xDrawCoord,
+                y: yDrawCoord,
+            }, this.cellSize, MAIN_BG_COLOR);
+            // this.recursiveAreaDraw(cell);
         }
 
         // this.drawer.drawSquare({
@@ -154,6 +158,12 @@ export class Sapper implements Game {
         return {
             x: this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell),
             y: this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell),
+        }
+    }
+
+    private recursiveAreaDraw(cell: any) {
+        for (let key in cell.area) {
+
         }
     }
 }

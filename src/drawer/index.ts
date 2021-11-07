@@ -1,5 +1,5 @@
 import { DrawingContext, DrawingContextProvider } from "../context/types";
-import { DEFAULT_COLOR, DEFAULT_WIDTH } from "./constants";
+import { DEFAULT_COLOR, DEFAULT_WIDTH, MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR } from "./constants";
 import { BrushSettings, Drawer } from "./types";
 
 export class CanvasDrawer implements Drawer {
@@ -33,17 +33,17 @@ export class CanvasDrawer implements Drawer {
     public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string): void {
       if (!this.context) return;
 
-      this.context.fillStyle = color ? color : "#6666FF";
+      this.context.fillStyle = color ? color : INITIAL_FIELD_BG_COLOR;
       this.context.fillRect(x, y, width, height)
     }
 
     public drawNumber({ x, y }: Cell, { width, height }: Size, value: number): void {
-      this.drawSquare({ x, y }, { width, height }, '#212121');
+      this.drawSquare({ x, y }, { width, height }, MAIN_BG_COLOR);
       // this.drawBorders({ x, y }, { width, height }, 'lightgrey')
       // нарисовать бордеры
 
       this.context.font = `${height / 2}px Arial`;
-		  this.context.fillStyle = 'white';
+		  this.context.fillStyle = TEXT_COLOR;
       this.context.fillText(String(value), x + (width / 2.5), y + (height / 1.5))
     }
 
