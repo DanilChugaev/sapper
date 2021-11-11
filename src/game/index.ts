@@ -106,15 +106,6 @@ export class Sapper implements Game {
     private makeInitialFill() {
         const size: Size = this.settings.canvasSize;
 
-        // for (let row in cells) {
-        //     for (let cell in cells[row]) {
-        //         this.drawer.drawSquare({
-        //             x: Number(cell) * pixelsCountInCell,
-        //             y: Number(row) * pixelsCountInCell,
-        //         }, size);
-        //     }
-        // }
-        
         this.drawer.drawSquare({
             x: 0,
             y: 0,
@@ -124,34 +115,27 @@ export class Sapper implements Game {
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
         const cellCoord: Cell = this.getCell(offsetX, offsetY);
         const cell = this.system.cells[cellCoord.y][cellCoord.x];
-
-        const xDrawCoord = Number(cellCoord.x) * this.cellSize.width;
-        const yDrawCoord = Number(cellCoord.y) * this.cellSize.height;
         
         if (cell.hasBomb) {
             // рисуем бомбу в указанной клетке на темном фоне
             // рисуем все остальные бомбы на синем фоне
             // стопорим игру
+
+            //это пока временно, чтоб видно бомбы было
+            this.drawer.drawNumber({
+                x: Number(cellCoord.x) * this.cellSize.width,
+                y: Number(cellCoord.y) * this.cellSize.height,
+            }, this.cellSize, -1);
+            cell.isOpen = true;
         } else if (cell.value !== 0) {
             // рисуем клетку с цифрой
-            this.drawer.drawNumber({
-                x: xDrawCoord,
-                y: yDrawCoord,
-            }, this.cellSize, cell.value);
+            this.openNumberSquare(cell);
         } else {
             // рисуем пустую клетку
             // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
-            this.drawer.drawSquare({
-                x: xDrawCoord,
-                y: yDrawCoord,
-            }, this.cellSize, MAIN_BG_COLOR);
-            // this.recursiveAreaDraw(cell);
+            this.openEmptySquare(cell);
+            this.recursiveOpenArea(cell);
         }
-
-        // this.drawer.drawSquare({
-        //     x: Number(cellCoord.x) * pixelsCountInCell,
-        //     y: Number(cellCoord.y) * pixelsCountInCell,
-        // }, size, '#fff');
     }
 
     private getCell(offsetX: number, offsetY: number): Cell {
@@ -161,9 +145,40 @@ export class Sapper implements Game {
         }
     }
 
-    private recursiveAreaDraw(cell: any) {
-        for (let key in cell.area) {
+    private recursiveOpenArea(cell: any) {
+        for (let index in cell.area) {
+            const systemCell = this.system.cells[cell.area[index].y][cell.area[index].x];
+            
+            if (!systemCell.isOpen && systemCell.value !== undefined) {
+                if (systemCell.value === 0) {
+                    this.openEmptySquare(systemCell);
+                    this.recursiveOpenArea(systemCell);
+                } else {
+                    this.openNumberSquare(systemCell);
 
+                    continue;
+                }                
+            } else {
+                continue;
+            }
         }
+    }
+
+    private openEmptySquare(cell: any) {
+        this.drawer.drawSquare({
+            x: Number(cell.x) * this.cellSize.width,
+            y: Number(cell.y) * this.cellSize.height,
+        }, this.cellSize, MAIN_BG_COLOR);
+
+        cell.isOpen = true;
+    }
+
+    private openNumberSquare(cell: any) {
+        this.drawer.drawNumber({
+            x: Number(cell.x) * this.cellSize.width,
+            y: Number(cell.y) * this.cellSize.height,
+        }, this.cellSize, cell.value);
+
+        cell.isOpen = true;
     }
 }
