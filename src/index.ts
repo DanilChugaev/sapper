@@ -5,6 +5,7 @@ import { CanvasDrawer } from "./drawer/index";
 import { Sapper } from "./game/index";
 import { Generator } from "./generator/index";
 import { settings } from "./settings/index";
+import { FileSource } from "./source/index";
 
 import "./index.scss";
 
@@ -12,9 +13,10 @@ const pixelRatioSource = {
     devicePixelRatio: 1,
 }
 
+const fileProvider = new FileSource();
 const domSource = new DomSource(window);
 const contextProvider = new CanvasContextProvider(domSource, pixelRatioSource, settings);
-const drawer = new CanvasDrawer(contextProvider);
+const drawer = new CanvasDrawer(contextProvider, fileProvider);
 const generator = new Generator(Math.random, Math.floor);
 const builder = new LevelBuilder(generator);
 const sapper = new Sapper(settings, contextProvider, drawer, domSource, builder, generator);

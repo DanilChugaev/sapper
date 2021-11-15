@@ -1,18 +1,22 @@
 import { DrawingContext, DrawingContextProvider } from "../context/types";
+import { SourceProvider } from "../source/types";
 import { DEFAULT_COLOR, DEFAULT_WIDTH, MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR } from "./constants";
 import { BrushSettings, Drawer } from "./types";
 
 export class CanvasDrawer implements Drawer {
     private context: DrawingContext = null;
+    private bomb: any;
+    private flag: any;
   
     constructor(
-      private contextProvider: DrawingContextProvider
+      private contextProvider: DrawingContextProvider,
+      private fileProvider: SourceProvider
     ) {
       this.context = this.contextProvider.getInstance();
       if (!this.context) throw new Error("Failed to access the drawing context.");
 
-      // this.bomb = sourceProvider.getImage('bomb');
-      // this.flag = sourceProvider.getImage('flag');
+      this.bomb = fileProvider.getImage('bomb');
+      this.flag = fileProvider.getImage('flag');
     }
   
     public drawLine(
@@ -44,11 +48,11 @@ export class CanvasDrawer implements Drawer {
 
       this.context.font = `${height / 2}px Arial`;
 		  this.context.fillStyle = TEXT_COLOR;
-      this.context.fillText(String(value), x + (width / 2.5), y + (height / 1.5))
+      this.context.fillText(String(value), x + (width / 2.5), y + (height / 1.5));
     }
 
     public drawBomb({ x, y }: Cell, { width, height }: Size): void {
-
+      this.context.drawImage(this.bomb, x + (width / 4), y + (height / 4), width / 2, height / 2);
     }
 
     // private drawBorders({ x, y }: Cell, { width, height }: Size, color: string): void {

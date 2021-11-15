@@ -117,23 +117,17 @@ export class Sapper implements Game {
         const cell = this.system.cells[cellCoord.y][cellCoord.x];
         
         if (cell.hasBomb) {
-            // рисуем бомбу в указанной клетке на темном фоне
+            // рисуем бомбу в указанной клетке
+            this.openBombCell(cell);
             // рисуем все остальные бомбы на синем фоне
             // стопорим игру
-
-            //это пока временно, чтоб видно бомбы было
-            this.drawer.drawNumber({
-                x: Number(cellCoord.x) * this.cellSize.width,
-                y: Number(cellCoord.y) * this.cellSize.height,
-            }, this.cellSize, -1);
-            cell.isOpen = true;
         } else if (cell.value !== 0) {
             // рисуем клетку с цифрой
             this.openNumberSquare(cell);
         } else {
             // рисуем пустую клетку
-            // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
             this.openEmptySquare(cell);
+            // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
             this.recursiveOpenArea(cell);
         }
     }
@@ -166,8 +160,8 @@ export class Sapper implements Game {
 
     private openEmptySquare(cell: any) {
         this.drawer.drawSquare({
-            x: Number(cell.x) * this.cellSize.width,
-            y: Number(cell.y) * this.cellSize.height,
+            x: this.calcPixelWidth(cell.x),
+            y: this.calcPixelHeight(cell.y),
         }, this.cellSize, MAIN_BG_COLOR);
 
         cell.isOpen = true;
@@ -175,10 +169,27 @@ export class Sapper implements Game {
 
     private openNumberSquare(cell: any) {
         this.drawer.drawNumber({
-            x: Number(cell.x) * this.cellSize.width,
-            y: Number(cell.y) * this.cellSize.height,
+            x: this.calcPixelWidth(cell.x),
+            y: this.calcPixelHeight(cell.y),
         }, this.cellSize, cell.value);
 
         cell.isOpen = true;
+    }
+
+    private openBombCell(cell: any) {
+        this.drawer.drawBomb({
+            x: this.calcPixelWidth(cell.x),
+            y: this.calcPixelHeight(cell.y),
+        }, this.cellSize);
+
+        cell.isOpen = true;
+    }
+
+    private calcPixelWidth(x: string) {
+        return Number(x) * this.cellSize.width;
+    }
+
+    private calcPixelHeight(y: string) {
+        return Number(y) * this.cellSize.height;
     }
 }
