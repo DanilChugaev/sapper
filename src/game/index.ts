@@ -119,8 +119,10 @@ export class Sapper implements Game {
         if (cell.hasBomb) {
             // рисуем бомбу в указанной клетке
             this.openBombCell(cell);
-            // рисуем все остальные бомбы на синем фоне
+            // рисуем все остальные бомбы
+            this.openAllBombs();
             // стопорим игру
+            this.stopGame();
         } else if (cell.value !== 0) {
             // рисуем клетку с цифрой
             this.openNumberSquare(cell);
@@ -185,11 +187,29 @@ export class Sapper implements Game {
         cell.isOpen = true;
     }
 
+    private openAllBombs() {
+        const { bombPositions, cells, fieldSize } = this.system;
+
+        for (let y = 0; y < Object.keys(cells).length; y++) {
+            for (let x = 0; x < Object.keys(cells[y]).length; x++) {
+                if (bombPositions.includes(x + y * fieldSize)) {
+                    this.openBombCell(cells[y][x]);
+                }
+            }
+        }
+    }
+
     private calcPixelWidth(x: string) {
         return Number(x) * this.cellSize.width;
     }
 
     private calcPixelHeight(y: string) {
         return Number(y) * this.cellSize.height;
+    }
+
+    private stopGame() {
+        // удаляем обработчик кликов
+        // this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
+        // показываем кнопку рестарта
     }
 }

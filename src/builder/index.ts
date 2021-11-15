@@ -66,9 +66,11 @@ export class LevelBuilder implements SystemBuilder {
             pixelsCountInCell: this.canvasSize.width / this.fieldSize,
             bombCount: this.bombCount,
             cells: {},
+            bombPositions: [],
+            fieldSize: this.fieldSize,
         };
 
-        const bombPositions: number[] = this.generateRandomBombPositions(this.fieldSize * this.fieldSize);
+        mapStructure.bombPositions = this.generateRandomBombPositions(this.fieldSize * this.fieldSize);
 
         for (let y = 0; y < this.fieldSize; y++) {
             for (let x = 0; x < this.fieldSize; x++) {
@@ -79,7 +81,7 @@ export class LevelBuilder implements SystemBuilder {
                     mapStructure.cells[row] = {};
                 }
                 
-                const hasBomb: boolean = bombPositions.includes(x + y * this.fieldSize);
+                const hasBomb: boolean = mapStructure.bombPositions.includes(x + y * this.fieldSize);
                 const area: AreaStructure = this.generateCellArea({ x, y });
 
                 const cellStructure: any = {
@@ -91,7 +93,7 @@ export class LevelBuilder implements SystemBuilder {
                 if (hasBomb) {
                     cellStructure.hasBomb = hasBomb;
                 } else {
-                    cellStructure.value = this.calcBombsAroundCells(area, bombPositions);
+                    cellStructure.value = this.calcBombsAroundCells(area, mapStructure.bombPositions);
                 }
 
                 mapStructure.cells[row][cell] = cellStructure;
