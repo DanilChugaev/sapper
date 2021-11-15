@@ -7,13 +7,20 @@
 </head>
 <body>
   <h1 class="title">Сапер</h1>
-  <button type="button" id="start-game" class="start-game">Играть</button>
+  <button type="button" id="start-game" class="button start-game">Играть</button>
   <select name="level" id="select-level" class="select-level"></select>
   
   <div id="game-container" class="game">
     <div class="game__count-bomb">кол-во бомб</div>
     <div class="game__time">сколько времени решал</div>
-    <canvas id="canvas" class="canvas"></canvas>
+
+    <dic class="canvas-container">
+      <canvas id="canvas" class="canvas"></canvas>
+
+      <div class="result-container" id="result-container">
+        <button type="button" onclick="location.reload()" class="button restart-game">Играть заново</button>
+      </div>
+    </dic>
   </div>
 </body>
 </html>

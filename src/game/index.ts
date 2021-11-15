@@ -10,6 +10,7 @@ import { Game } from "./types";
 export class Sapper implements Game {
     private select: Nullable<HTMLSelectElement> = null;
     private button: Nullable<HTMLElement> = null;
+    private resultContainer: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
@@ -27,6 +28,7 @@ export class Sapper implements Game {
         this.button = elementSource.getElement('start-game');
         this.gameContainer = elementSource.getElement('game-container');
         this.canvas = elementSource.getElement('canvas');
+        this.resultContainer = elementSource.getElement('result-container');
     }
 
     /**
@@ -208,8 +210,11 @@ export class Sapper implements Game {
     }
 
     private stopGame() {
-        // удаляем обработчик кликов
-        // this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
         // показываем кнопку рестарта
+        this.resultContainer.style.display = 'flex';
+
+        setTimeout(() => {
+            this.resultContainer.classList.add('result-container--is-visible');
+        }, 50);
     }
 }
