@@ -1,7 +1,7 @@
 import { MapStructure, SystemBuilder } from '../builder/types';
 import { DrawingContextProvider } from '../context/types';
 import { ElementSource } from '../dom/types';
-import { MAIN_BG_COLOR } from '../drawer/constants';
+import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../drawer/constants';
 import { Drawer } from '../drawer/types';
 import { MathGenerator } from '../generator/types';
 import { GameSettings } from '../settings/types';
@@ -69,6 +69,7 @@ export class Sapper implements Game {
         this.changeVisibilityElements();
         this.makeInitialFill();
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
+        this.contextProvider.listenCanvasContextMenu(this.checkContextMenu.bind(this));
     }
 
     /**
@@ -115,8 +116,7 @@ export class Sapper implements Game {
     }
 
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
-        const cellCoord: Cell = this.getCell(offsetX, offsetY);
-        const cell = this.system.cells[cellCoord.y][cellCoord.x];
+        const cell = this.getCell(offsetX, offsetY);
         
         if (cell.hasBomb) {
             // рисуем бомбу в указанной клетке
@@ -136,11 +136,25 @@ export class Sapper implements Game {
         }
     }
 
-    private getCell(offsetX: number, offsetY: number): Cell {
-        return {
-            x: this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell),
-            y: this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell),
+    private checkContextMenu(event: MouseEvent): void {
+        event.preventDefault();
+
+        const cell = this.getCell(event.offsetX, event.offsetY);
+
+        if (!cell.isOpen) {
+            if (!cell.hasFlag) {
+                this.setFlag(cell);
+            } else {
+                this.removeFlag(cell);
+            }
         }
+    }
+
+    private getCell(offsetX: number, offsetY: number): any {
+        const x = this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell);
+        const y = this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell);
+
+        return this.system.cells[y][x];
     }
 
     private recursiveOpenArea(cell: any) {
@@ -199,6 +213,24 @@ export class Sapper implements Game {
                 }
             }
         }
+    }
+
+    private setFlag(cell: any) {
+        this.drawer.drawFlag({
+            x: this.calcPixelWidth(cell.x),
+            y: this.calcPixelHeight(cell.y),
+        }, this.cellSize);
+
+        cell.hasFlag = true;
+    }
+
+    private removeFlag(cell: any) {
+        this.drawer.drawSquare({
+            x: this.calcPixelWidth(cell.x),
+            y: this.calcPixelHeight(cell.y),
+        }, this.cellSize, INITIAL_FIELD_BG_COLOR);
+
+        cell.hasFlag = false;
     }
 
     private calcPixelWidth(x: string) {

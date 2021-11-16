@@ -27,6 +27,11 @@ export class CanvasContextProvider implements DrawingContextProvider {
       // @ts-ignore
       this.canvas.addEventListener("click", callback);
     }
+
+    public listenCanvasContextMenu(callback: Function): void {
+      // @ts-ignore
+      this.canvas.addEventListener("contextmenu", callback);
+    }
   
     private normalizeScale(): void {
       if (!this.canvas || !this.context) return;
