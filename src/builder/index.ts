@@ -65,6 +65,7 @@ export class LevelBuilder implements SystemBuilder {
         const mapStructure: MapStructure = {
             pixelsCountInCell: this.canvasSize.width / this.fieldSize,
             bombCount: this.bombCount,
+            bombLeft: this.bombCount,
             cells: {},
             bombPositions: [],
             fieldSize: this.fieldSize,

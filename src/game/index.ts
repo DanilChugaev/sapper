@@ -11,6 +11,7 @@ export class Sapper implements Game {
     private select: Nullable<HTMLSelectElement> = null;
     private button: Nullable<HTMLElement> = null;
     private resultContainer: Nullable<HTMLElement> = null;
+    private leftBombContainer: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
@@ -29,6 +30,7 @@ export class Sapper implements Game {
         this.gameContainer = elementSource.getElement('game-container');
         this.canvas = elementSource.getElement('canvas');
         this.resultContainer = elementSource.getElement('result-container');
+        this.leftBombContainer = elementSource.getElement('left-bomb');
     }
 
     /**
@@ -66,6 +68,7 @@ export class Sapper implements Game {
             width: this.system.pixelsCountInCell,
             height: this.system.pixelsCountInCell,
         }
+        this.leftBombContainer.textContent = this.system.bombLeft;
         this.changeVisibilityElements();
         this.makeInitialFill();
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
@@ -119,20 +122,14 @@ export class Sapper implements Game {
         const cell = this.getCell(offsetX, offsetY);
         
         if (cell.hasBomb) {
-            // рисуем бомбу в указанной клетке
-            this.openBombCell(cell);
-            // рисуем все остальные бомбы
-            this.openAllBombs();
-            // стопорим игру
-            this.stopGame();
+            this.openBombCell(cell); // рисуем бомбу в указанной клетке
+            this.openAllBombs(); // рисуем все остальные бомбы
+            this.stopGame(); // стопорим игру
         } else if (cell.value !== 0) {
-            // рисуем клетку с цифрой
-            this.openNumberSquare(cell);
+            this.openNumberSquare(cell); // рисуем клетку с цифрой
         } else {
-            // рисуем пустую клетку
-            this.openEmptySquare(cell);
-            // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
-            this.recursiveOpenArea(cell);
+            this.openEmptySquare(cell); // рисуем пустую клетку
+            this.recursiveOpenArea(cell); // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
         }
     }
 
@@ -222,6 +219,9 @@ export class Sapper implements Game {
         }, this.cellSize);
 
         cell.hasFlag = true;
+
+        this.system.bombLeft = this.system.bombLeft - 1;
+        this.leftBombContainer.textContent = this.system.bombLeft;
     }
 
     private removeFlag(cell: any) {
@@ -231,6 +231,9 @@ export class Sapper implements Game {
         }, this.cellSize, INITIAL_FIELD_BG_COLOR);
 
         cell.hasFlag = false;
+
+        this.system.bombLeft = this.system.bombLeft + 1;
+        this.leftBombContainer.textContent = this.system.bombLeft;
     }
 
     private calcPixelWidth(x: string) {
