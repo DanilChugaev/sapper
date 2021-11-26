@@ -5,6 +5,7 @@ import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../drawer/constants';
 import { Drawer } from '../drawer/types';
 import { MathGenerator } from '../generator/types';
 import { GameSettings } from '../settings/types';
+import { StorageProvider } from '../storage/types';
 import { Game } from "./types";
 
 export class Sapper implements Game {
@@ -24,6 +25,7 @@ export class Sapper implements Game {
         private elementSource: ElementSource,
         private builder: SystemBuilder,
         private generator: MathGenerator,
+        private storage: StorageProvider,
     ) {
         this.select = <HTMLSelectElement>elementSource.getElement('select-level');
         this.button = elementSource.getElement('start-game');
@@ -40,6 +42,13 @@ export class Sapper implements Game {
      */
     public init(): void {
         this.elementSource.afterLoad((event: Event) => {
+            // пробуем установить старый выбранный уровень
+            const savedLevel = this.storage.get('level');
+
+            if (savedLevel) {
+                this.changeLevelInSettings(savedLevel);
+            }
+            
             for (let key in this.settings.levels) {
                 const option = <HTMLOptionElement>this.elementSource.createElement('option');
 
@@ -83,13 +92,30 @@ export class Sapper implements Game {
      * @returns {void}
      */
     private changeLevel(event: Event): void {
+        // @ts-ignore
+        this.changeLevelInSettings(event.target.value);
+        this.storage.save({
+            name: 'level',
+            // @ts-ignore
+            value: event.target.value,
+        })
+    }
+
+    /**
+     * Меняет уровень игры в настройках
+     * 
+     * @param {string} value - выбранный уровень
+     * 
+     * @returns {void}
+     */
+    private changeLevelInSettings(value: string) {
         for (let key in this.settings.levels) {
             // @ts-ignore
             this.settings.levels[key].selected = false;
         }
 
         // @ts-ignore
-        this.settings.levels[event.target.value].selected = true;
+        this.settings.levels[value].selected = true;
     }
 
     /**
