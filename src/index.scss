@@ -117,3 +117,13 @@ body {
   justify-content: center;
   margin-bottom: calc(2 * var(--indent));
 }
+
+.hints {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: calc(7 * var(--indent) * -1);
+  right: 0;
+  font-size: calc(var(--font-size) - 4px);
+}
