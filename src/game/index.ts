@@ -12,6 +12,7 @@ export class Sapper implements Game {
     private select: Nullable<HTMLSelectElement> = null;
     private button: Nullable<HTMLElement> = null;
     private resultContainer: Nullable<HTMLElement> = null;
+    private winContainer: Nullable<HTMLElement> = null;
     private leftBombContainer: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
@@ -32,6 +33,7 @@ export class Sapper implements Game {
         this.gameContainer = elementSource.getElement('game-container');
         this.canvas = elementSource.getElement('canvas');
         this.resultContainer = elementSource.getElement('result-container');
+        this.winContainer = elementSource.getElement('win-container');
         this.leftBombContainer = elementSource.getElement('left-bomb');
     }
 
@@ -209,7 +211,7 @@ export class Sapper implements Game {
         }
     }
 
-    private openEmptySquare(cell: any) {
+    private openEmptySquare(cell: any): void {
         this.drawer.drawSquare({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
@@ -218,7 +220,7 @@ export class Sapper implements Game {
         cell.isOpen = true;
     }
 
-    private openNumberSquare(cell: any) {
+    private openNumberSquare(cell: any): void {
         this.drawer.drawNumber({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
@@ -227,7 +229,7 @@ export class Sapper implements Game {
         cell.isOpen = true;
     }
 
-    private openBombCell(cell: any) {
+    private openBombCell(cell: any): void {
         this.drawer.drawBomb({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
@@ -236,7 +238,7 @@ export class Sapper implements Game {
         cell.isOpen = true;
     }
 
-    private openAllBombs() {
+    private openAllBombs(): void {
         const { bombPositions, cells, fieldSize } = this.system;
 
         for (let y = 0; y < Object.keys(cells).length; y++) {
@@ -248,7 +250,7 @@ export class Sapper implements Game {
         }
     }
 
-    private setFlag(cell: any) {
+    private setFlag(cell: any): void {
         this.drawer.drawFlag({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
@@ -258,9 +260,13 @@ export class Sapper implements Game {
 
         this.system.bombLeft = this.system.bombLeft - 1;
         this.leftBombContainer.textContent = this.system.bombLeft;
+
+        // if (this.system.bombLeft === 0 && allBombsAreCorrectSelected) {
+        //     this.stopGame(true);
+        // }
     }
 
-    private removeFlag(cell: any) {
+    private removeFlag(cell: any): void {
         this.drawer.drawSquare({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
@@ -272,17 +278,22 @@ export class Sapper implements Game {
         this.leftBombContainer.textContent = this.system.bombLeft;
     }
 
-    private calcPixelWidth(x: string) {
+    private calcPixelWidth(x: string): number {
         return Number(x) * this.cellSize.width;
     }
 
-    private calcPixelHeight(y: string) {
+    private calcPixelHeight(y: string): number {
         return Number(y) * this.cellSize.height;
     }
 
-    private stopGame() {
+    private stopGame(isWin: boolean = false): void {
         // показываем кнопку рестарта
         this.resultContainer.style.display = 'flex';
+
+        if (isWin) {
+            // если выиграли, показываем поздравления
+            this.winContainer.style.display = 'flex';
+        }
 
         setTimeout(() => {
             this.resultContainer.classList.add('result-container--is-visible');
