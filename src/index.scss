@@ -26,12 +26,14 @@ body {
 
 .canvas {
   display: none;
+  border-radius: 6px;
 }
 
 .canvas-container {
   position: relative;
   border-radius: 6px;
   margin-top: 5px;
+  border: 1px solid #333;
 }
 
 .start-game {

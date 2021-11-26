@@ -1,6 +1,6 @@
 import { DrawingContext, DrawingContextProvider } from "../context/types";
 import { SourceProvider } from "../source/types";
-import { DEFAULT_COLOR, DEFAULT_WIDTH, MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR } from "./constants";
+import { DEFAULT_COLOR, DEFAULT_WIDTH, MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from "./constants";
 import { BrushSettings, Drawer } from "./types";
 
 export class CanvasDrawer implements Drawer {
@@ -34,17 +34,19 @@ export class CanvasDrawer implements Drawer {
       this.context.stroke();
     }
 
-    public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string): void {
+    public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string, hasBorders: boolean = true): void {
       if (!this.context) return;
 
       this.context.fillStyle = color ? color : INITIAL_FIELD_BG_COLOR;
-      this.context.fillRect(x, y, width, height)
+      this.context.fillRect(x, y, width, height);
+
+      if (hasBorders) {
+        this.drawBorders({ x, y }, { width, height });
+      }
     }
 
     public drawNumber({ x, y }: Cell, { width, height }: Size, value: number): void {
       this.drawSquare({ x, y }, { width, height }, MAIN_BG_COLOR);
-      // this.drawBorders({ x, y }, { width, height }, 'lightgrey')
-      // нарисовать бордеры
 
       this.context.font = `${height / 2}px Arial`;
 		  this.context.fillStyle = TEXT_COLOR;
@@ -52,25 +54,17 @@ export class CanvasDrawer implements Drawer {
     }
 
     public drawBomb({ x, y }: Cell, { width, height }: Size): void {
-      this.drawSquare({ x, y }, { width, height });
+      this.drawSquare({ x, y }, { width, height }, INITIAL_FIELD_BG_COLOR, false);
       this.context.drawImage(this.bomb, x + (width / 4), y + (height / 4), width / 2, height / 2);
     }
 
     public drawFlag({ x, y }: Cell, { width, height }: Size): void {
-      this.drawSquare({ x, y }, { width, height }, FLAG_BG_COLOR);
+      this.drawSquare({ x, y }, { width, height }, FLAG_BG_COLOR, false);
       this.context.drawImage(this.flag, x + (width / 4), y + (height / 4), width / 2, height / 2);
     }
 
-    // private drawBorders({ x, y }: Cell, { width, height }: Size, color: string): void {
-    //   this.drawLine({
-    //     start: {
-    //       x: x,
-    //       y: y,
-    //     },
-    //     end: {
-    //       x: x + width,
-    //       y: y,
-    //     },
-    //   }, { color })
-    // }
+    private drawBorders({ x, y }: Cell, { width, height }: Size): void {
+      this.context.strokeStyle = BORDER_COLOR;
+      this.context.strokeRect(x, y, width, height);
+    }
   }
