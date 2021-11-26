@@ -147,15 +147,18 @@ export class Sapper implements Game {
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
         const cell = this.getCell(offsetX, offsetY);
         
-        if (cell.hasBomb) {
-            this.openBombCell(cell); // рисуем бомбу в указанной клетке
-            this.openAllBombs(); // рисуем все остальные бомбы
-            this.stopGame(); // стопорим игру
-        } else if (cell.value !== 0) {
-            this.openNumberSquare(cell); // рисуем клетку с цифрой
-        } else {
-            this.openEmptySquare(cell); // рисуем пустую клетку
-            this.recursiveOpenArea(cell); // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
+        // чтобы нажать на клетку с флагом - его нужно сначала снять
+        if (!cell.hasFlag) {
+            if (cell.hasBomb) {
+                this.openBombCell(cell); // рисуем бомбу в указанной клетке
+                this.openAllBombs(); // рисуем все остальные бомбы
+                this.stopGame(); // стопорим игру
+            } else if (cell.value !== 0) {
+                this.openNumberSquare(cell); // рисуем клетку с цифрой
+            } else {
+                this.openEmptySquare(cell); // рисуем пустую клетку
+                this.recursiveOpenArea(cell); // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
+            }
         }
     }
 
@@ -254,7 +257,7 @@ export class Sapper implements Game {
         this.drawer.drawSquare({
             x: this.calcPixelWidth(cell.x),
             y: this.calcPixelHeight(cell.y),
-        }, this.cellSize, INITIAL_FIELD_BG_COLOR);
+        }, this.cellSize, INITIAL_FIELD_BG_COLOR, false);
 
         cell.hasFlag = false;
 

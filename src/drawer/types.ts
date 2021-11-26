@@ -6,7 +6,7 @@ export type BrushSettings = {
 
 export interface Drawer {
     drawLine(line: Line, settings?: BrushSettings): void;
-    drawSquare(cell: Cell, size: Size, color?: string): void;
+    drawSquare(cell: Cell, size: Size, color?: string, hasBorders?: boolean): void;
     drawNumber(cell: Cell, size: Size, value: number): void;
     drawBomb(cell: Cell, size: Size): void;
     drawFlag(cell: Cell, size: Size): void;
