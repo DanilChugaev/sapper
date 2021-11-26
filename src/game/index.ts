@@ -187,12 +187,15 @@ export class Sapper implements Game {
         for (let index in cell.area) {
             const systemCell = this.system.cells[cell.area[index].y][cell.area[index].x];
             
-            if (!systemCell.isOpen && systemCell.value !== undefined) {
+            /**
+             * из обработки пропускаем:
+             *  - открытую ячейку
+             *  - ячейку с флагом
+             *  - ячейку с бомбой
+             */
+            if (!systemCell.isOpen && !systemCell.hasFlag && !systemCell.hasBomb) {
                 if (systemCell.value === 0) {
-                    // если выбрали флаг в пустом поле - его не убираем
-                    if (!systemCell.hasFlag) {
-                        this.openEmptySquare(systemCell);
-                    }
+                    this.openEmptySquare(systemCell);
                     
                     this.recursiveOpenArea(systemCell);
                 } else {

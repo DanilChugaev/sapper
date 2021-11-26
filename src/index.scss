@@ -1,3 +1,19 @@
+:root {
+  --border-radius: 6px;
+  --border-width: 1px;
+  --indent: 5px;
+  --font-size: 16px;
+  --animation-time: 0.5s;
+  --outer-indent: -1px;
+
+  --border-color: #333;
+  --black-color: #000;
+  --text-color: #fff;
+  --main-bg-color: #212121;
+  --field-bg-color: #6666FF;
+  --field-bg-color-hover: #8888FF;
+}
+
 *,
 *::before,
 *::after {
@@ -16,79 +32,80 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #212121;
+  padding: calc(4 * var(--indent));
+  background-color: var(--main-bg-color);
 }
 
 .title {
-  color: #fff;
+  color: var(--text-color);
 }
 
 .canvas {
   display: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
 }
 
 .canvas-container {
   position: relative;
-  border-radius: 6px;
-  margin-top: 5px;
-  border: 1px solid #333;
-}
-
-.start-game {
-  margin-top: 10px;
+  border-radius: var(--border-radius);
+  margin-top: var(--indent);
+  border: var(--border-width) solid var(--border-color);
 }
 
 .button {
-  padding: 10px 15px;
+  padding: calc(2 * var(--indent)) calc(3 * var(--indent));
   margin: 0;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  font-size: 16px;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
   background-color: transparent;
   cursor: pointer;
-  background-color: #dae9f6;
-  color: #296fa8;
+  background-color: var(--field-bg-color);
+  color: var(--text-color);
+  transition: background-color var(--animation-time) ease;
 
   &:hover {
-    background-color: #e4eff9;
-    color: #296fa8;
+    background-color: var(--field-bg-color-hover);
   }
 }
 
+.start-game {
+  margin-top: calc(2 * var(--indent));
+}
+
 .select-level {
-  margin-top: 10px;
+  margin-top: calc(2 * var(--indent));
 }
 
 .game {
   display: none;
   flex-direction: column;
   align-items: center;
-  color: #fff;
+  color: var(--text-color);
+  font-size: var(--font-size);
 
   &__count-bomb {
-    margin-top: 5px;
+    margin-top: var(--indent);
   }
 
   &__time {
-    margin-top: 5px;
+    margin-top: var(--indent);
   }
 }
 
 .result-container {
   display: none;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: var(--outer-indent);
+  left: var(--outer-indent);
+  right: var(--outer-indent);
+  bottom: var(--outer-indent);
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
 
   &--is-visible {
-    background-color: rgba($color: #000000, $alpha: 0.5);
-    transition: background-color 0.6s ease;
+    background-color: rgba($color: #000, $alpha: 0.5);
+    transition: background-color var(--animation-time) ease;
   }
 }
