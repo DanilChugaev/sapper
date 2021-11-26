@@ -17,7 +17,7 @@ export const levels: ComplexityList = {
     medium: {
         name: 'medium',
         bombCount: 40,
-        fieldSize: 10,
+        fieldSize: 20,
         selected: false,
     },
     hard: {
