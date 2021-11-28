@@ -38,6 +38,11 @@ body {
 
 .title {
   color: var(--text-color);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 
 .canvas {
@@ -63,6 +68,10 @@ body {
   background-color: var(--field-bg-color);
   color: var(--text-color);
   transition: background-color var(--animation-time) ease;
+  -webkit-user-select: none;
+  -moz-user-select: none; 
+  -ms-user-select: none;
+  user-select: none;
 
   &:hover {
     background-color: var(--field-bg-color-hover);
@@ -90,6 +99,15 @@ body {
 
   &__time {
     margin-top: var(--indent);
+  }
+
+  &__count-bomb,
+  &__time {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
   }
 }
 
@@ -126,4 +144,9 @@ body {
   top: calc(7 * var(--indent) * -1);
   right: 0;
   font-size: calc(var(--font-size) - 4px);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
