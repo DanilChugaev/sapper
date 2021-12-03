@@ -14,10 +14,12 @@ export class Sapper implements Game {
     private resultContainer: Nullable<HTMLElement> = null;
     private winContainer: Nullable<HTMLElement> = null;
     private leftBombContainer: Nullable<HTMLElement> = null;
+    private timerContainer: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
     private cellSize: Size;
+    private timerInterval: any;
 
     constructor(
         private settings: GameSettings,
@@ -35,6 +37,7 @@ export class Sapper implements Game {
         this.resultContainer = elementSource.getElement('result-container');
         this.winContainer = elementSource.getElement('win-container');
         this.leftBombContainer = elementSource.getElement('left-bomb');
+        this.timerContainer = elementSource.getElement('timer');
     }
 
     /**
@@ -80,10 +83,35 @@ export class Sapper implements Game {
             height: this.system.pixelsCountInCell,
         }
         this.leftBombContainer.textContent = this.system.bombLeft;
+        this.timerContainer.textContent = '0';
+
         this.changeVisibilityElements();
         this.makeInitialFill();
+        this.startTimer();
+
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
         this.contextProvider.listenCanvasContextMenu(this.checkContextMenu.bind(this));
+    }
+
+    private startTimer(): void {
+        let seconds: number = 0;
+        this.timerContainer.textContent = String(seconds++);
+
+        this.timerInterval = setInterval(() => {
+            this.timerContainer.textContent = String(seconds++);
+        }, 1000);
+    }
+
+    private stopTimer(isWin: boolean): void  {
+        clearInterval(this.timerInterval);
+
+        if (isWin) {
+            this.storage.save({
+                name: `timer-${this.storage.get('level')}`,
+                // @ts-ignore
+                value: this.timerContainer.textContent,
+            })
+        }
     }
 
     /**
@@ -287,6 +315,8 @@ export class Sapper implements Game {
     }
 
     private stopGame(isWin: boolean = false): void {
+        this.stopTimer(isWin);
+
         // показываем кнопку рестарта
         this.resultContainer.style.display = 'flex';
 

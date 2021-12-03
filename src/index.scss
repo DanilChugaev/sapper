@@ -93,16 +93,9 @@ body {
   color: var(--text-color);
   font-size: var(--font-size);
 
-  &__count-bomb {
-    margin-top: var(--indent);
-  }
-
-  &__time {
-    margin-top: var(--indent);
-  }
-
   &__count-bomb,
-  &__time {
+  &__timer {
+    margin-top: var(--indent);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
