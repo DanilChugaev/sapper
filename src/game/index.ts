@@ -20,6 +20,7 @@ export class Sapper implements Game {
     private system: MapStructure;
     private cellSize: Size;
     private timerInterval: any;
+    private countCorrectlySelectedBombs: number = 0;
 
     constructor(
         private settings: GameSettings,
@@ -289,9 +290,13 @@ export class Sapper implements Game {
         this.system.bombLeft = this.system.bombLeft - 1;
         this.leftBombContainer.textContent = this.system.bombLeft;
 
-        // if (this.system.bombLeft === 0 && allBombsAreCorrectSelected) {
-        //     this.stopGame(true);
-        // }
+        if (cell.hasBomb) {
+            this.countCorrectlySelectedBombs++;
+        }
+
+        if (this.system.bombLeft === 0 && this.system.bombCount === this.countCorrectlySelectedBombs) {
+            this.stopGame(true);
+        }
     }
 
     private removeFlag(cell: any): void {
@@ -304,6 +309,10 @@ export class Sapper implements Game {
 
         this.system.bombLeft = this.system.bombLeft + 1;
         this.leftBombContainer.textContent = this.system.bombLeft;
+
+        if (cell.hasBomb) {
+            this.countCorrectlySelectedBombs--;
+        }
     }
 
     private calcPixelWidth(x: string): number {
