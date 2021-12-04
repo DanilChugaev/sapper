@@ -124,6 +124,7 @@ body {
 
 .win-container {
   display: none;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: calc(2 * var(--indent));
@@ -142,4 +143,10 @@ body {
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.best-level-time {
+  display: none;
+  color: var(--text-color);
+  margin-top: var(--indent);
 }

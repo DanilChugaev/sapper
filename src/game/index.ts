@@ -16,6 +16,10 @@ export class Sapper implements Game {
     private leftBombContainer: Nullable<HTMLElement> = null;
     private timerContainer: Nullable<HTMLElement> = null;
     private gameContainer: Nullable<HTMLElement> = null;
+    private currentTimeContainer: Nullable<HTMLElement> = null;
+    private bestLevelTime: Nullable<HTMLElement> = null;
+    private levelTime: Nullable<HTMLElement> = null;
+    private bestTimeContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
     private cellSize: Size;
@@ -39,6 +43,10 @@ export class Sapper implements Game {
         this.winContainer = elementSource.getElement('win-container');
         this.leftBombContainer = elementSource.getElement('left-bomb');
         this.timerContainer = elementSource.getElement('timer');
+        this.currentTimeContainer = elementSource.getElement('current-time-container');
+        this.bestTimeContainer = elementSource.getElement('best-time-container');
+        this.bestLevelTime = elementSource.getElement('best-level-time');
+        this.levelTime = elementSource.getElement('level-time');
     }
 
     /**
@@ -48,12 +56,9 @@ export class Sapper implements Game {
      */
     public init(): void {
         this.elementSource.afterLoad((event: Event) => {
-            // пробуем установить старый выбранный уровень
-            const savedLevel = this.storage.get('level');
-
-            if (savedLevel) {
-                this.changeLevelInSettings(savedLevel);
-            }
+            const selectedLevel = this.storage.get('level') || 'easy';
+            
+            this.changeLevelInSettings(selectedLevel);
             
             for (let key in this.settings.levels) {
                 const option = <HTMLOptionElement>this.elementSource.createElement('option');
@@ -107,11 +112,27 @@ export class Sapper implements Game {
         clearInterval(this.timerInterval);
 
         if (isWin) {
+            const currentTime = this.timerContainer.textContent;
+            const currentLevel = this.storage.get('level');
+            const bestTimeStorageName = `best-time-${currentLevel}`;
+            const bestTime = this.storage.get(bestTimeStorageName);
+            let time = '';
+
+            this.currentTimeContainer.textContent = currentTime;
+            
+            if (bestTime && Number(bestTime) < Number(currentTime)) {
+                time = bestTime;
+            } else {
+                time = currentTime;
+            }
+
             this.storage.save({
-                name: `timer-${this.storage.get('level')}`,
+                name: bestTimeStorageName,
                 // @ts-ignore
-                value: this.timerContainer.textContent,
+                value: time,
             })
+
+            this.bestTimeContainer.textContent = time;
         }
     }
 
@@ -135,18 +156,27 @@ export class Sapper implements Game {
     /**
      * Меняет уровень игры в настройках
      * 
-     * @param {string} value - выбранный уровень
+     * @param {string} selectedLevel - выбранный уровень
      * 
      * @returns {void}
      */
-    private changeLevelInSettings(value: string) {
+    private changeLevelInSettings(selectedLevel: string) {
+        const bestTime = this.storage.get(`best-time-${selectedLevel}`);
+
+        if (bestTime) {
+            this.levelTime.style.display = 'block';
+            this.bestLevelTime.textContent = bestTime;
+        } else {
+            this.levelTime.style.display = 'none';
+        }
+
         for (let key in this.settings.levels) {
             // @ts-ignore
             this.settings.levels[key].selected = false;
         }
 
         // @ts-ignore
-        this.settings.levels[value].selected = true;
+        this.settings.levels[selectedLevel].selected = true;
     }
 
     /**
@@ -157,6 +187,7 @@ export class Sapper implements Game {
     private changeVisibilityElements(): void {
         this.button.style.display = 'none';
         this.select.style.display = 'none';
+        this.levelTime.style.display = 'none';
         this.gameContainer.style.display = 'flex';
         this.canvas.style.display = 'block';
     }

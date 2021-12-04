@@ -9,6 +9,9 @@
   <h1 class="title">Сапер</h1>
   <button type="button" id="start-game" class="button start-game">Играть</button>
   <select name="level" id="select-level" class="select-level"></select>
+  <div class="best-level-time" id="level-time">
+    <span>Лушее время уровня:</span> <span id="best-level-time"></span> <span>секунд</span>
+  </div>
   
   <div id="game-container" class="game">
     <div class="game__count-bomb">
@@ -16,7 +19,7 @@
     </div>
 
     <div class="game__timer">
-      <span>время:</span> <span id="timer"></span>
+      <span>время:</span> <span id="timer"></span><span>c</span>
     </div>
 
     <dic class="canvas-container">
@@ -29,7 +32,13 @@
 
       <div class="result-container" id="result-container">
         <div class="win-container" id="win-container">
-          <h2 class="win-container__title">Победа!</h1>
+          <h2 class="win-container__title">Победа!</h2>
+          <div>
+            <span>Время прохождения:</span> <span id="current-time-container"></span> <span>секунд</span>
+          </div>
+          <div>
+            <span>Лушее время уровня:</span> <span id="best-time-container"></span> <span>секунд</span>
+          </div>
         </div>
         <button type="button" onclick="location.reload()" class="button restart-game">Играть заново</button>
       </div>
