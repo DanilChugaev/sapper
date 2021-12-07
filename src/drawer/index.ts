@@ -1,6 +1,6 @@
 import { DrawingContext, DrawingContextProvider } from "../context/types";
 import { SourceProvider } from "../source/types";
-import { DEFAULT_COLOR, DEFAULT_WIDTH, MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from "./constants";
+import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from "./constants";
 import { BrushSettings, Drawer } from "./types";
 
 export class CanvasDrawer implements Drawer {
@@ -17,21 +17,6 @@ export class CanvasDrawer implements Drawer {
 
       this.bomb = fileProvider.getImage('bomb');
       this.flag = fileProvider.getImage('flag');
-    }
-  
-    public drawLine(
-      { start, end }: Line,
-      { color, width }: BrushSettings = {}
-    ): void {
-      if (!this.context) return;
-  
-      this.context.strokeStyle = color ?? DEFAULT_COLOR;
-      this.context.lineWidth = width ?? DEFAULT_WIDTH;
-  
-      this.context.beginPath();
-      this.context.moveTo(start.x, start.y);
-      this.context.lineTo(end.x, end.y);
-      this.context.stroke();
     }
 
     public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string, hasBorders: boolean = true): void {
