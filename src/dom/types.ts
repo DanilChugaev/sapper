@@ -3,7 +3,3 @@ export interface ElementSource {
     getElement(id: string): Nullable<HTMLElement>;
     afterLoad(callback: Function): void;
 }
-
-export interface PixelRatioSource {
-    devicePixelRatio?: number;
-}
