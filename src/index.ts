@@ -10,14 +10,10 @@ import { FileSource } from "./source/index";
 import "./index.scss";
 import { DataStorage } from "./storage/index";
 
-const pixelRatioSource = {
-    devicePixelRatio: 1,
-}
-
 const storage = new DataStorage(window.localStorage);
 const fileProvider = new FileSource();
 const domSource = new DomSource(window);
-const contextProvider = new CanvasContextProvider(domSource, pixelRatioSource, settings);
+const contextProvider = new CanvasContextProvider(domSource, settings);
 const drawer = new CanvasDrawer(contextProvider, fileProvider);
 const generator = new Generator(Math.random, Math.floor);
 const builder = new LevelBuilder(generator);

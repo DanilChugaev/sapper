@@ -19,5 +19,6 @@ export type Complexity = {
 /** Основные настройки игры */
 export type GameSettings = {
     canvasSize: Size;
+    devicePixelRatio: number;
     levels: ComplexityList;
 }

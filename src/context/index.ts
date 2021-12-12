@@ -1,4 +1,4 @@
-import { ElementSource, PixelRatioSource } from "../dom/types";
+import { ElementSource } from "../dom/types";
 import { GameSettings } from "../settings/types";
 import { DrawingContext, DrawingContextProvider } from "./types";
 
@@ -8,7 +8,6 @@ export class CanvasContextProvider implements DrawingContextProvider {
   
     constructor(
       private elementSource: ElementSource,
-      private pixelRatioSource: PixelRatioSource,
       private settings: GameSettings
     ) {
       const canvas = this.elementSource.getElement("canvas");
@@ -36,7 +35,7 @@ export class CanvasContextProvider implements DrawingContextProvider {
     private normalizeScale(): void {
       if (!this.canvas || !this.context) return;
   
-      const ratio = this.pixelRatioSource.devicePixelRatio || 1;
+      const ratio = this.settings.devicePixelRatio || 1;
       const { width, height } = this.settings.canvasSize;
   
       this.canvas.width = width * ratio;
