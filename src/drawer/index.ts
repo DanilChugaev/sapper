@@ -1,7 +1,7 @@
 import { DrawingContext, DrawingContextProvider } from "../context/types";
 import { SourceProvider } from "../source/types";
 import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from "./constants";
-import { BrushSettings, Drawer } from "./types";
+import { Drawer } from "./types";
 
 export class CanvasDrawer implements Drawer {
     private context: DrawingContext = null;
@@ -19,37 +19,37 @@ export class CanvasDrawer implements Drawer {
       this.flag = fileProvider.getImage('flag');
     }
 
-    public drawSquare({ x, y }: Cell, { width, height }: Size, color?: string, hasBorders: boolean = true): void {
+    public drawSquare({ x, y }: Cell, size: PixelsAmount, color?: string, hasBorders: boolean = true): void {
       if (!this.context) return;
 
       this.context.fillStyle = color ? color : INITIAL_FIELD_BG_COLOR;
-      this.context.fillRect(x, y, width, height);
+      this.context.fillRect(x, y, size, size);
 
       if (hasBorders) {
-        this.drawBorders({ x, y }, { width, height });
+        this.drawBorders({ x, y }, size);
       }
     }
 
-    public drawNumber({ x, y }: Cell, { width, height }: Size, value: number): void {
-      this.drawSquare({ x, y }, { width, height }, MAIN_BG_COLOR);
+    public drawNumber({ x, y }: Cell, size: PixelsAmount, value: number): void {
+      this.drawSquare({ x, y }, size, MAIN_BG_COLOR);
 
-      this.context.font = `${height / 2}px Arial`;
+      this.context.font = `${size / 2}px Arial`;
 		  this.context.fillStyle = TEXT_COLOR;
-      this.context.fillText(String(value), x + (width / 2.5), y + (height / 1.5));
+      this.context.fillText(String(value), x + (size / 2.5), y + (size / 1.5));
     }
 
-    public drawBomb({ x, y }: Cell, { width, height }: Size): void {
-      this.drawSquare({ x, y }, { width, height }, INITIAL_FIELD_BG_COLOR, false);
-      this.context.drawImage(this.bomb, x + (width / 4), y + (height / 4), width / 2, height / 2);
+    public drawBomb({ x, y }: Cell, size: PixelsAmount): void {
+      this.drawSquare({ x, y }, size, INITIAL_FIELD_BG_COLOR, false);
+      this.context.drawImage(this.bomb, x + (size / 4), y + (size / 4), size / 2, size / 2);
     }
 
-    public drawFlag({ x, y }: Cell, { width, height }: Size): void {
-      this.drawSquare({ x, y }, { width, height }, FLAG_BG_COLOR, false);
-      this.context.drawImage(this.flag, x + (width / 4), y + (height / 4), width / 2, height / 2);
+    public drawFlag({ x, y }: Cell, size: PixelsAmount): void {
+      this.drawSquare({ x, y }, size, FLAG_BG_COLOR, false);
+      this.context.drawImage(this.flag, x + (size / 4), y + (size / 4), size / 2, size / 2);
     }
 
-    private drawBorders({ x, y }: Cell, { width, height }: Size): void {
+    private drawBorders({ x, y }: Cell, size: PixelsAmount): void {
       this.context.strokeStyle = BORDER_COLOR;
-      this.context.strokeRect(x, y, width, height);
+      this.context.strokeRect(x, y, size, size);
     }
   }

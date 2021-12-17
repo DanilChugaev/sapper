@@ -36,13 +36,13 @@ export class CanvasContextProvider implements DrawingContextProvider {
       if (!this.canvas || !this.context) return;
   
       const ratio = this.settings.devicePixelRatio || 1;
-      const { width, height } = this.settings.canvasSize;
+      const size: PixelsAmount = this.settings.canvasSize;
   
-      this.canvas.width = width * ratio;
-      this.canvas.height = height * ratio;
+      this.canvas.width = size * ratio;
+      this.canvas.height = size * ratio;
   
-      this.canvas.style.width = `${width}px`;
-      this.canvas.style.height = `${height}px`;
+      this.canvas.style.width = `${size}px`;
+      this.canvas.style.height = `${size}px`;
   
       this.context.imageSmoothingEnabled = false;
       this.context.scale(ratio, ratio);

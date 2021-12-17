@@ -22,7 +22,7 @@ export class Sapper implements Game {
     private bestTimeContainer: Nullable<HTMLElement> = null;
     private canvas: Nullable<HTMLElement> = null;
     private system: MapStructure;
-    private cellSize: Size;
+    private cellSize: PixelsAmount;
     private timerInterval: any;
     private countCorrectlySelectedBombs: number = 0;
 
@@ -84,10 +84,7 @@ export class Sapper implements Game {
      */
     private start(): void {
         this.system = this.builder.build(this.settings);
-        this.cellSize = {
-            width: this.system.pixelsCountInCell,
-            height: this.system.pixelsCountInCell,
-        }
+        this.cellSize = this.system.pixelsCountInCell;
         this.leftBombContainer.textContent = this.system.bombLeft;
         this.timerContainer.textContent = '0';
 
@@ -198,7 +195,7 @@ export class Sapper implements Game {
      * @returns {void}
      */
     private makeInitialFill() {
-        const size: Size = this.settings.canvasSize;
+        const size: PixelsAmount = this.settings.canvasSize;
 
         this.drawer.drawSquare({
             x: 0,
@@ -346,12 +343,12 @@ export class Sapper implements Game {
         }
     }
 
-    private calcPixelWidth(x: string): number {
-        return Number(x) * this.cellSize.width;
+    private calcPixelWidth(x: string): PixelsAmount {
+        return Number(x) * this.cellSize;
     }
 
-    private calcPixelHeight(y: string): number {
-        return Number(y) * this.cellSize.height;
+    private calcPixelHeight(y: string): PixelsAmount {
+        return Number(y) * this.cellSize;
     }
 
     private stopGame(isWin: boolean = false): void {

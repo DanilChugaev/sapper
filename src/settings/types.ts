@@ -11,13 +11,13 @@ export type ComplexityList = {
 /** Уровень сложности игры */
 export type Complexity = {
     bombCount: number,
-    fieldSize: number,
+    fieldSize: CellAmount,
     selected: Boolean,
 };
 
 /** Основные настройки игры */
 export type GameSettings = {
-    canvasSize: Size;
+    canvasSize: PixelsAmount;
     devicePixelRatio: number;
     levels: ComplexityList;
 }

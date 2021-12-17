@@ -4,9 +4,9 @@ import { AREA_STRUCTURE } from "./constants";
 import { MathGenerator } from "../generator/types";
 
 export class LevelBuilder implements SystemBuilder {
-    private fieldSize: number;
+    private fieldSize: CellAmount;
     private bombCount: number;
-    private canvasSize: Size;
+    private canvasSize: PixelsAmount;
 
     constructor(
         private generator: MathGenerator,
@@ -55,15 +55,11 @@ export class LevelBuilder implements SystemBuilder {
     /**
      * Генерирует структуру поля для выбранного уровня сложности
      * 
-     * @param {Size} canvasSize - размер канваса в пикселях
-     * @param {number} fieldSize - размер игрового поля в клетках
-     * @param {number} bombCount - количество бомб на игровом поле
-     * 
      * @returns {MapStructure}
      */
     private generateMapStructure(): MapStructure {
         const mapStructure: MapStructure = {
-            pixelsCountInCell: this.canvasSize.width / this.fieldSize,
+            pixelsCountInCell: this.canvasSize / this.fieldSize,
             bombCount: this.bombCount,
             bombLeft: this.bombCount,
             cells: {},
