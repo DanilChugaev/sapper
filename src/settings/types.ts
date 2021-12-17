@@ -10,7 +10,6 @@ export type ComplexityList = {
 
 /** Уровень сложности игры */
 export type Complexity = {
-    name: string;
     bombCount: number,
     fieldSize: number,
     selected: Boolean,
