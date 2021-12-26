@@ -1,6 +1,6 @@
 import { ComplexityList } from "./types";
 
-/** Список уровней сложности игры */
+/** List of game difficulty levels */
 export const levels: ComplexityList = {
     beginner: {
         bombCount: 10,

@@ -1,31 +1,27 @@
-/** --- Геометрия --- **/
-
-/** Кол-во клеток игрового поля */
+/** Number of cells of the playing field */
 type CellAmount = number;
-/** Кол-во пикселей */
+/** Number of pixels */
 type PixelsAmount = number;
 
-/** Координата на игровом поле */
+/** Coordinate on the playing field */
 type FieldCoordinate = number;
 type PixelCoordinate = number;
 
-/** Ячейка игрового поля */
+/** Game board cell */
 type Cell = {
     x: FieldCoordinate;
     y: FieldCoordinate;
+    area?: any; // todo: fix type
+    hasBomb?: boolean;
+    hasFlag?: boolean;
+    isOpen?: boolean;
+    value?: number;
 };
 
-/** Точка на канвасе */
-type Point = {
-    x: PixelCoordinate;
-    y: PixelCoordinate;
-};
+/** Positions of bombs on the field */
+type BombPositions = number[];
 
-/** --- Графика --- **/
-
+/** Any */
 type HexadecimalColor = string;
 type Color = HexadecimalColor;
-
-/** --- Всякое --- **/
-
 type Nullable<T> = T | null;

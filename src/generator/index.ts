@@ -1,29 +1,26 @@
 import { MathGenerator } from "./types";
 
+/** Math number generator */
 export class Generator implements MathGenerator {
     constructor(
-        private getRandom: Function,
-        private getFloor: Function,
+        private getRandom: () => number,
+        private getFloor: (n: number) => number,
     ) {}
 
     /**
-     * Возвращает рандомное целое число в определенном промежутке
+     * Returns a random integer in a specified range
      * 
-     * @param {number} min - минимальное число промежутка
-     * @param {number} max - максимальное число промежутка
-     * 
-     * @returns {number}
+     * @param min - minimum number from the interval
+     * @param max - maximum number from the interval
      */
     public getRandomArbitrary(min: number, max: number): number {
         return this.getFloorNumber(this.getRandom() * (max - min)) + min;
     }
 
     /**
-     * Округляет число до целого
+     * Rounds a number to an integer
      * 
-     * @param {number} n - исходное число
-     * 
-     * @returns {number}
+     * @param n - original number
      */
      public getFloorNumber(n: number): number {
         return this.getFloor(n);

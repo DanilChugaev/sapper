@@ -8,22 +8,54 @@ import { GameSettings } from '../settings/types';
 import { StorageProvider } from '../storage/types';
 import { Game } from "./types";
 
+/** The main class of the game */
 export class Sapper implements Game {
+    /** HTML select for choice of difficulty level */
     private select: Nullable<HTMLSelectElement> = null;
-    private button: Nullable<HTMLElement> = null;
-    private resultContainer: Nullable<HTMLElement> = null;
-    private winContainer: Nullable<HTMLElement> = null;
-    private leftBombContainer: Nullable<HTMLElement> = null;
-    private timerContainer: Nullable<HTMLElement> = null;
-    private gameContainer: Nullable<HTMLElement> = null;
-    private currentTimeContainer: Nullable<HTMLElement> = null;
+
+    /** HTML button for start game */
+    private startGameButton: Nullable<HTMLElement> = null;
+
+     /** Container for best level time */
+     private levelTime: Nullable<HTMLElement> = null;
+
+    /** To display best level time before the game */
     private bestLevelTime: Nullable<HTMLElement> = null;
-    private levelTime: Nullable<HTMLElement> = null;
-    private bestTimeContainer: Nullable<HTMLElement> = null;
+
+    /** Element on which the game will be drawn */
     private canvas: Nullable<HTMLElement> = null;
+
+    /** Container for fields and other containers */
+    private gameContainer: Nullable<HTMLElement> = null;
+
+    /** To display the results of the game */
+    private resultContainer: Nullable<HTMLElement> = null;
+
+    /** Container for current time and best time of the game */
+    private winContainer: Nullable<HTMLElement> = null;
+
+    /** To display the remaining number of bombs */
+    private leftBombContainer: Nullable<HTMLElement> = null;
+
+    /** to display the time since the start of the game */
+    private timerContainer: Nullable<HTMLElement> = null;
+
+    /** Container for current time of the game in win container */
+    private currentTimeContainer: Nullable<HTMLElement> = null;
+
+    /** Container for best time of the game in win container */
+    private bestTimeContainer: Nullable<HTMLElement> = null;
+    
+    /** Structure of the field of the selected level of difficulty */
     private system: MapStructure;
-    private cellSize: PixelsAmount;
-    private timerInterval: any;
+
+    /** Cell size in pixels */
+    private cellPixelsSize: PixelsAmount;
+
+    /** Timer for counting time */
+    private timerInterval: any; // todo: fix type
+
+    /** Number of correctly allocated bombs */
     private countCorrectlySelectedBombs: number = 0;
 
     constructor(
@@ -36,28 +68,25 @@ export class Sapper implements Game {
         private storage: StorageProvider,
     ) {
         this.select = <HTMLSelectElement>elementSource.getElement('select-level');
-        this.button = elementSource.getElement('start-game');
-        this.gameContainer = elementSource.getElement('game-container');
+        this.startGameButton = elementSource.getElement('start-game');
+        this.levelTime = elementSource.getElement('level-time');
+        this.bestLevelTime = elementSource.getElement('best-level-time');
         this.canvas = elementSource.getElement('canvas');
+        this.gameContainer = elementSource.getElement('game-container');
         this.resultContainer = elementSource.getElement('result-container');
         this.winContainer = elementSource.getElement('win-container');
         this.leftBombContainer = elementSource.getElement('left-bomb');
         this.timerContainer = elementSource.getElement('timer');
         this.currentTimeContainer = elementSource.getElement('current-time-container');
         this.bestTimeContainer = elementSource.getElement('best-time-container');
-        this.bestLevelTime = elementSource.getElement('best-level-time');
-        this.levelTime = elementSource.getElement('level-time');
     }
 
-    /**
-     * Инициализируем данные игры
-     * 
-     * @returns {void}
-     */
+    /** Initializes game engine after the DOM has loaded */
     public init(): void {
-        this.elementSource.afterLoad((event: Event) => {
+        this.elementSource.afterLoad(() => {
             const selectedLevel = this.storage.get('level') || 'easy';
             
+            /** if we have previously selected the level, then set it again */
             this.changeLevelInSettings(selectedLevel);
             
             for (let key in this.settings.levels) {
@@ -68,24 +97,23 @@ export class Sapper implements Game {
                 // @ts-ignore
                 option.selected = this.settings.levels[key].selected;
 
+                /** substitute the selection options into the select from the settings */
                 this.select.appendChild(option);
             }
 
             this.select.addEventListener('change', this.changeLevel.bind(this), false);
 
-            this.button.addEventListener('click', this.start.bind(this), false);
+            this.startGameButton.addEventListener('click', this.start.bind(this), false);
         });
     }
 
-    /**
-     * Стартуем игру
-     * 
-     * @returns {void}
-     */
+    /** Generate level and start the game */
     private start(): void {
         this.system = this.builder.build(this.settings);
-        this.cellSize = this.system.pixelsCountInCell;
-        this.leftBombContainer.textContent = this.system.bombLeft;
+        this.cellPixelsSize = this.system.pixelsCountInCell;
+
+        // display bombs left and timer above the field
+        this.leftBombContainer.textContent = this.system.bombLeft.toString();
         this.timerContainer.textContent = '0';
 
         this.changeVisibilityElements();
@@ -93,18 +121,27 @@ export class Sapper implements Game {
         this.startTimer();
 
         this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
-        this.contextProvider.listenCanvasContextMenu(this.checkContextMenu.bind(this));
+        this.contextProvider.listenCanvasContextMenu(this.checkRightButtonClick.bind(this));
     }
 
+    /** Start timer for counting the level time (in seconds) */
     private startTimer(): void {
         let seconds: number = 0;
+
+        // display the current time above the field
         this.timerContainer.textContent = String(seconds++);
 
+        // update the timer once per second
         this.timerInterval = setInterval(() => {
             this.timerContainer.textContent = String(seconds++);
         }, 1000);
     }
 
+    /**
+     * Stop timer and save the level time count
+     *
+     * @param isWin - true, if the game ends with a win
+     */
     private stopTimer(isWin: boolean): void  {
         clearInterval(this.timerInterval);
 
@@ -115,6 +152,7 @@ export class Sapper implements Game {
             const bestTime = this.storage.get(bestTimeStorageName);
             let time = '';
 
+            // display current time on the finish screen
             this.currentTimeContainer.textContent = currentTime;
             
             if (bestTime && Number(bestTime) < Number(currentTime)) {
@@ -125,24 +163,23 @@ export class Sapper implements Game {
 
             this.storage.save({
                 name: bestTimeStorageName,
-                // @ts-ignore
                 value: time,
             })
 
+            // display best time on the finish screen
             this.bestTimeContainer.textContent = time;
         }
     }
 
     /**
-     * Меняет уровень после смены в селекте
+     * Changes the level after changing the value in the select
      * 
-     * @param {Event} event - DOM событие
-     * 
-     * @returns {void}
+     *  @param event - DOM event
      */
     private changeLevel(event: Event): void {
         // @ts-ignore
         this.changeLevelInSettings(event.target.value);
+
         this.storage.save({
             name: 'level',
             // @ts-ignore
@@ -151,15 +188,14 @@ export class Sapper implements Game {
     }
 
     /**
-     * Меняет уровень игры в настройках
+     * Changes the level of the game in the settings 
      * 
-     * @param {string} selectedLevel - выбранный уровень
-     * 
-     * @returns {void}
+     * @param selectedLevel - nama of selected level
      */
-    private changeLevelInSettings(selectedLevel: string) {
+    private changeLevelInSettings(selectedLevel: string): void {
         const bestTime = this.storage.get(`best-time-${selectedLevel}`);
 
+        // if the level was passed earlier, then display its best time on the start screen
         if (bestTime) {
             this.levelTime.style.display = 'block';
             this.bestLevelTime.textContent = bestTime;
@@ -176,55 +212,60 @@ export class Sapper implements Game {
         this.settings.levels[selectedLevel].selected = true;
     }
 
-    /**
-     * Меняет видимость игровых элементов на странице
-     * 
-     * @returns {void}
-     */
+    /** Changes visibility of game elements on the page after start of the game */
     private changeVisibilityElements(): void {
-        this.button.style.display = 'none';
+        this.startGameButton.style.display = 'none';
         this.select.style.display = 'none';
         this.levelTime.style.display = 'none';
         this.gameContainer.style.display = 'flex';
         this.canvas.style.display = 'block';
     }
 
-    /**
-     * Заполняет весь канвас по умолчанию
-     * 
-     * @returns {void}
-     */
-    private makeInitialFill() {
+    /** Fills the entire canvas by default with the default color */
+    private makeInitialFill(): void {
         const size: PixelsAmount = this.settings.canvasSize;
 
         this.drawer.drawSquare({
             x: 0,
             y: 0,
-        }, size);
+        }, size, INITIAL_FIELD_BG_COLOR);
     }
 
+    /**
+     * Track the click on the canvas
+     * 
+     * @param mouseEvent - events that occur due to the user interacting with a mouse
+     * @param mouseEvent.offsetX - offset of the mouse cursor along the X axis from the edge of the canvas
+     * @param mouseEvent.offsetY - offset of the mouse cursor along the Y axis from the edge of the canvas
+     */
     private checkClick({ offsetX, offsetY }: MouseEvent): void {
         const cell = this.getCell(offsetX, offsetY);
         
-        // чтобы нажать на клетку с флагом - его нужно сначала снять
+        // to click on the cell with the flag - first you need to remove it
         if (!cell.hasFlag) {
             if (cell.hasBomb) {
-                this.openBombCell(cell); // рисуем бомбу в указанной клетке
-                this.openAllBombs(); // рисуем все остальные бомбы
-                this.stopGame(); // стопорим игру
+                this.openBombCell(cell); // draw a bomb in the specified cell
+                this.openAllBombs(); // draw all the other bombs
+                this.stopGame(); // stop the game
             } else if (cell.value !== 0) {
-                this.openNumberSquare(cell); // рисуем клетку с цифрой
+                this.openNumberSquare(cell); // draw a cell with a number
             } else {
-                this.openEmptySquare(cell); // рисуем пустую клетку
-                this.recursiveOpenArea(cell); // проходимся по соседям и рисуем клетки до того момента, пока не появится в клетке цифра
+                this.openEmptySquare(cell); // draw an empty cell
+                this.recursiveOpenArea(cell); // go through the neighbors and draw the cells until the number appears in the cell
             }
         }
     }
 
-    private checkContextMenu(event: MouseEvent): void {
-        event.preventDefault();
+    /**
+     * Track the right mouse button click on the canvas
+     * 
+     * @param mouseEvent - events that occur due to the user interacting with a mouse
+     */
+    private checkRightButtonClick(mouseEvent: MouseEvent): void {
+        // prevent the context menu from opening
+        mouseEvent.preventDefault();
 
-        const cell = this.getCell(event.offsetX, event.offsetY);
+        const cell = this.getCell(mouseEvent.offsetX, mouseEvent.offsetY);
 
         if (!cell.isOpen) {
             if (!cell.hasFlag) {
@@ -235,22 +276,33 @@ export class Sapper implements Game {
         }
     }
 
-    private getCell(offsetX: number, offsetY: number): any {
+    /**
+     * Returns the cell of the generated level
+     * 
+     * @param offsetX - offset of the mouse cursor along the X axis from the edge of the canvas
+     * @param offsetY - offset of the mouse cursor along the Y axis from the edge of the canvas
+     */
+    private getCell(offsetX: number, offsetY: number): Cell {
         const x = this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell);
         const y = this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell);
 
         return this.system.cells[y][x];
     }
 
-    private recursiveOpenArea(cell: any) {
+    /**
+     * Open area of cells around a given cell
+     * 
+     * @param cell - game board cell
+     */
+    private recursiveOpenArea(cell: Cell) {
         for (let index in cell.area) {
             const systemCell = this.system.cells[cell.area[index].y][cell.area[index].x];
             
             /**
-             * из обработки пропускаем:
-             *  - открытую ячейку
-             *  - ячейку с флагом
-             *  - ячейку с бомбой
+             * skip from processing:
+             *  - open cell
+             *  - flag cell
+             *  - bomb cell
              */
             if (!systemCell.isOpen && !systemCell.hasFlag && !systemCell.hasBomb) {
                 if (systemCell.value === 0) {
@@ -268,33 +320,49 @@ export class Sapper implements Game {
         }
     }
 
-    private openEmptySquare(cell: any): void {
+    /**
+     * Open empty cell
+     *
+     * @param cell - game board cell
+     */
+    private openEmptySquare(cell: Cell): void {
         this.drawer.drawSquare({
-            x: this.calcPixelWidth(cell.x),
-            y: this.calcPixelHeight(cell.y),
-        }, this.cellSize, MAIN_BG_COLOR);
+            x: this.calcPixelCoord(cell.x),
+            y: this.calcPixelCoord(cell.y),
+        }, this.cellPixelsSize, MAIN_BG_COLOR);
 
         cell.isOpen = true;
     }
 
-    private openNumberSquare(cell: any): void {
+    /**
+     * Open cell with number
+     * 
+     * @param cell - game board cell
+     */
+    private openNumberSquare(cell: Cell): void {
         this.drawer.drawNumber({
-            x: this.calcPixelWidth(cell.x),
-            y: this.calcPixelHeight(cell.y),
-        }, this.cellSize, cell.value);
+            x: this.calcPixelCoord(cell.x),
+            y: this.calcPixelCoord(cell.y),
+        }, this.cellPixelsSize, cell.value);
 
         cell.isOpen = true;
     }
 
-    private openBombCell(cell: any): void {
+    /**
+     * Open cell with bomb
+     * 
+     * @param cell - game board cell
+     */
+    private openBombCell(cell: Cell): void {
         this.drawer.drawBomb({
-            x: this.calcPixelWidth(cell.x),
-            y: this.calcPixelHeight(cell.y),
-        }, this.cellSize);
+            x: this.calcPixelCoord(cell.x),
+            y: this.calcPixelCoord(cell.y),
+        }, this.cellPixelsSize);
 
         cell.isOpen = true;
     }
 
+    /** Open all bombs on the field */
     private openAllBombs(): void {
         const { bombPositions, cells, fieldSize } = this.system;
 
@@ -307,61 +375,81 @@ export class Sapper implements Game {
         }
     }
 
-    private setFlag(cell: any): void {
+    /**
+     * Set a flag in a cell and count the correctly selected bombs
+     * 
+     * @param cell - game board cell
+     */
+    private setFlag(cell: Cell): void {
         this.drawer.drawFlag({
-            x: this.calcPixelWidth(cell.x),
-            y: this.calcPixelHeight(cell.y),
-        }, this.cellSize);
+            x: this.calcPixelCoord(cell.x),
+            y: this.calcPixelCoord(cell.y),
+        }, this.cellPixelsSize);
 
         cell.hasFlag = true;
 
         this.system.bombLeft = this.system.bombLeft - 1;
-        this.leftBombContainer.textContent = this.system.bombLeft;
+        // displaying the number of remaining bombs over the field
+        this.leftBombContainer.textContent = this.system.bombLeft.toString();
 
         if (cell.hasBomb) {
             this.countCorrectlySelectedBombs++;
         }
 
+        // stop the game with a win if all the bombs have run out and are marked with flags correctly
         if (this.system.bombLeft === 0 && this.system.bombCount === this.countCorrectlySelectedBombs) {
             this.stopGame(true);
         }
     }
 
-    private removeFlag(cell: any): void {
+    /**
+     * Remove flag from cell
+     * 
+     * @param cell - game board cell
+     */
+    private removeFlag(cell: Cell): void {
         this.drawer.drawSquare({
-            x: this.calcPixelWidth(cell.x),
-            y: this.calcPixelHeight(cell.y),
-        }, this.cellSize, INITIAL_FIELD_BG_COLOR, false);
+            x: this.calcPixelCoord(cell.x),
+            y: this.calcPixelCoord(cell.y),
+        }, this.cellPixelsSize, INITIAL_FIELD_BG_COLOR, false);
 
         cell.hasFlag = false;
 
         this.system.bombLeft = this.system.bombLeft + 1;
-        this.leftBombContainer.textContent = this.system.bombLeft;
+         // displaying the number of remaining bombs over the field
+        this.leftBombContainer.textContent = this.system.bombLeft.toString();
 
         if (cell.hasBomb) {
             this.countCorrectlySelectedBombs--;
         }
     }
 
-    private calcPixelWidth(x: string): PixelsAmount {
-        return Number(x) * this.cellSize;
+    /**
+     * Calculate the initial coordinates of the cell in pixels
+     * 
+     * @param coord - coordinate on the playing field
+     */
+    private calcPixelCoord(coord: FieldCoordinate): PixelsAmount {
+        return Number(coord) * this.cellPixelsSize;
     }
 
-    private calcPixelHeight(y: string): PixelsAmount {
-        return Number(y) * this.cellSize;
-    }
-
+    /**
+     * Stop game
+     * 
+     * @param isWin - true, if the game ends with a win
+     */
     private stopGame(isWin: boolean = false): void {
         this.stopTimer(isWin);
 
-        // показываем кнопку рестарта
+        // show the restart button
         this.resultContainer.style.display = 'flex';
 
         if (isWin) {
-            // если выиграли, показываем поздравления
+            // if you won, show congratulations
             this.winContainer.style.display = 'flex';
         }
 
+        // this is to animate the background appearance
         setTimeout(() => {
             this.resultContainer.classList.add('result-container--is-visible');
         }, 50);

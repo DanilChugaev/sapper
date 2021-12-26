@@ -6,9 +6,9 @@ import { Sapper } from "./game/index";
 import { Generator } from "./generator/index";
 import { settings } from "./settings/index";
 import { FileSource } from "./source/index";
+import { DataStorage } from "./storage/index";
 
 import "./index.scss";
-import { DataStorage } from "./storage/index";
 
 const storage = new DataStorage(window.localStorage);
 const fileProvider = new FileSource();

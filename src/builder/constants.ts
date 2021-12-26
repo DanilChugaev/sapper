@@ -1,11 +1,12 @@
 import { AreaStructure } from "./types";
 
 /**
- * Относительные координаты соседних ячеек области
+ * Coordinates of neighboring cells relative to the center cell
  * 
- * #1#2#3#
- * #8-+-4#
- * #7#6#5#
+ * @example
+ *  #0#1#2#
+ *  #7-8-3#
+ *  #6#5#4#
  */
 export const AREA_STRUCTURE: AreaStructure = {
     0: { x: -1, y: -1 },

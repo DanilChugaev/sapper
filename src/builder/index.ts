@@ -3,21 +3,25 @@ import { AreaStructure, MapStructure, SystemBuilder } from "./types";
 import { AREA_STRUCTURE } from "./constants";
 import { MathGenerator } from "../generator/types";
 
+/** Class responsible for creating levels based on levels settings */
 export class LevelBuilder implements SystemBuilder {
+    /** Size of the field in cells */
     private fieldSize: CellAmount;
-    private bombCount: number;
+
+    /** Size of the field in pixels */
     private canvasSize: PixelsAmount;
+    
+    /** Number of level bombs */
+    private bombCount: number;
 
     constructor(
         private generator: MathGenerator,
     ) {}
 
     /**
-     * Билдит уровень
+     * Build level
      * 
-     * @param {GameSettings} settings - настройки игры
-     * 
-     * @returns {MapStructure}
+     * @param settings - basic game settings
      */
     public build(settings: GameSettings): MapStructure {
         const { fieldSize, bombCount } = this.getSelectedLevel(settings.levels);
@@ -32,11 +36,9 @@ export class LevelBuilder implements SystemBuilder {
     }
 
     /**
-     * Возвращает выбранный уровень сложности из списка
+     * Returns the selected difficulty level from the list of levels from the settings
      * 
-     * @param {ComplexityList} levels - список уровней сложности
-     * 
-     * @returns {Complexity}
+     * @param levels - list of possible levels of difficulty of the game
      */
     private getSelectedLevel(levels: ComplexityList): Complexity {
         let selectedLevel: Complexity;
@@ -52,11 +54,7 @@ export class LevelBuilder implements SystemBuilder {
         return selectedLevel;
     }
 
-    /**
-     * Генерирует структуру поля для выбранного уровня сложности
-     * 
-     * @returns {MapStructure}
-     */
+    /** Generates the field structure for the selected difficulty level */
     private generateMapStructure(): MapStructure {
         const mapStructure: MapStructure = {
             pixelsCountInCell: this.canvasSize / this.fieldSize,
@@ -69,6 +67,7 @@ export class LevelBuilder implements SystemBuilder {
 
         mapStructure.bombPositions = this.generateRandomBombPositions(this.fieldSize * this.fieldSize);
 
+        // traversal of arrays goes from left to right and from top to bottom
         for (let y = 0; y < this.fieldSize; y++) {
             for (let x = 0; x < this.fieldSize; x++) {
                 const row: number = y;
@@ -81,7 +80,7 @@ export class LevelBuilder implements SystemBuilder {
                 const hasBomb: boolean = mapStructure.bombPositions.includes(x + y * this.fieldSize);
                 const area: AreaStructure = this.generateCellArea({ x, y });
 
-                const cellStructure: any = {
+                const cellStructure: Cell = {
                     y: row, 
                     x: cell,
                     area,
@@ -97,31 +96,28 @@ export class LevelBuilder implements SystemBuilder {
             }
         }
 
-        console.log(mapStructure);
-
         return mapStructure;
     }
 
-    /**
-     * Генерирует область ячеек с их координатами вокруг выбранной ячейки на основе ее координат
+    /** 
+     * Generates a region of cells with their coordinates around the selected cell based on its coordinates
      * 
-     * @param {number} x - координата 'x' ячейки
-     * @param {number} y - координата 'y' ячейки
-     * 
-     * @returns {AreaStructure}
+     * @param cell - game board cell
+     * @param cell.x - the x coordinate on the playing field
+     * @param cell.y - the y coordinate on the playing field
      */
     private generateCellArea({ x, y }: Cell): AreaStructure {
         const area: AreaStructure = {};
     
-        // 8 - количество ячеек вокруг центральной
+        // 8 - the number of cells around the central
         for (let index = 0; index < 8; index++) {
-            /** Проверяем, не выходит ли ячейка за левую и верхнюю границы поля */
+            /** Checking if the cell goes beyond the left and top borders of the field */
             // @ts-ignore
             if (x + AREA_STRUCTURE[index].x < 0 || y + AREA_STRUCTURE[index].y < 0) {
                 continue;
             }
 
-            /** Проверяем, не выходит ли ячейка за правую и нижнюю границы поля */
+            /** Checking if the cell goes beyond the right and bottom borders of the field */
             // @ts-ignore
             if (x + AREA_STRUCTURE[index].x >= this.fieldSize || y + AREA_STRUCTURE[index].y >= this.fieldSize) {
                 continue;
@@ -140,18 +136,17 @@ export class LevelBuilder implements SystemBuilder {
     }
 
     /**
-     * Генерирует рандомные позиции для расположения бомб на поле
-     * 
-     * @param {number} cellsCount - количество ячеек на поле
-     * 
-     * @returns {number[]}
+     * Generates random positions for placing bombs on the field
+     *
+     * @param cellsCount - number of cells of the playing field
      */
-    private generateRandomBombPositions(cellsCount: number): number[] {
-        const bombPositions: number[] = [];
+    private generateRandomBombPositions(cellsCount: CellAmount): number[] {
+        const bombPositions: BombPositions = [];
 
         for (let index = 0; index < this.bombCount; index++) {
             let randomPosition: number = this.generator.getRandomArbitrary(1, cellsCount);
 
+            // if the generated position is already in the list, we generate it again
             while (bombPositions.includes(randomPosition)) {
                 randomPosition = this.generator.getRandomArbitrary(1, cellsCount);
             }
@@ -163,14 +158,12 @@ export class LevelBuilder implements SystemBuilder {
     }
 
     /**
-     * Считает количество бомб вокруг ячейки
+     * Counts the number of bombs around the cell
      * 
-     * @param {AreaStructure} area
-     * @param {number[]} bombPositions
-     * 
-     * @returns {number}
+     * @param area - neighboring cells relative to the center cell
+     * @param bombPositions - positions of bombs on the field
      */
-    private calcBombsAroundCells(area: AreaStructure, bombPositions: number[]): number {
+    private calcBombsAroundCells(area: AreaStructure, bombPositions: BombPositions): number {
         let result: number = 0;
 
         for (let key in area) {

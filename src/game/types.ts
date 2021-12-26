@@ -1,8 +1,5 @@
+/** For main class of the game */
 export interface Game {
-    /**
-     * Инициализируем данные игры
-     * 
-     * @returns {void}
-     */
+    /** Initializes game engine after the DOM has loaded */
     init(): void;
 }

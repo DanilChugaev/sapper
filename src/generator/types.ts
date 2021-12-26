@@ -1,12 +1,17 @@
+/** Math number generator */
 export interface MathGenerator {
     /**
-     * Возвращает рандомное целое число в определенном промежутке
+     * Returns a random integer in a specified range
      * 
-     * @param {number} min - минимальное число промежутка
-     * @param {number} max - максимальное число промежутка
-     * 
-     * @returns {number}
+     * @param min - minimum number from the interval
+     * @param max - maximum number from the interval
      */
     getRandomArbitrary(min: number, max: number): number;
+
+    /**
+     * Rounds a number to an integer
+     * 
+     * @param n - original number
+     */
     getFloorNumber(n: number): number;
 }

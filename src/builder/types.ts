@@ -1,18 +1,26 @@
 import { GameSettings } from "../settings/types";
 
-export type MapStructure = any;
+/** Structure of the field of the selected level of difficulty */
+export type MapStructure = {
+    pixelsCountInCell: number,
+    bombCount: number,
+    bombLeft: number,
+    cells: any, // todo: fix type
+    bombPositions: BombPositions,
+    fieldSize: number,
+};
 
+/** Responsible for creating levels */
 export interface SystemBuilder {
     /**
-     * Билдит уровень
+     * Build level
      * 
-     * @param {GameSettings} settings - настройки игры
-     * 
-     * @returns {MapStructure}
+     * @param settings - basic game settings
      */
-    build(settings: GameSettings): any;
+    build(settings: GameSettings): MapStructure;
 }
 
+/** Neighboring cells relative to the center cell */
 export type AreaStructure = {
     0?: Cell,
     1?: Cell,
