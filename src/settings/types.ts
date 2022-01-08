@@ -1,3 +1,15 @@
+/** Уровень сложности игры */
+export type Complexity = {
+    /** Number of level bombs */
+    bombCount: number,
+
+    /** Size of the field in cells */
+    fieldSize: CellAmount,
+
+    /** If level is selected */
+    selected: boolean,
+};
+
 /** List of possible levels of difficulty of the game */
 export type ComplexityList = {
     beginner: Complexity,
@@ -8,21 +20,9 @@ export type ComplexityList = {
     extreme: Complexity,
 };
 
-/** Уровень сложности игры */
-export type Complexity = {
-    /** Number of level bombs */
-    bombCount: number,
-
-    /** Size of the field in cells */
-    fieldSize: CellAmount,
-
-    /** If level is selected */
-    selected: Boolean,
-};
-
 /** Basic game settings */
 export type GameSettings = {
     canvasSize: PixelsAmount;
     devicePixelRatio: number;
     levels: ComplexityList;
-}
+};

@@ -8,13 +8,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "webpack",
     "watch": "webpack --watch",
-    "serve": "cd dist && live-server"
+    "serve": "cd dist && live-server",
+    "lint": "eslint src/*/*.ts --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.4.0",
+    "eslint": "^7.32.0",
+    "eslint-config-codex": "^1.6.4",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",
     "live-server": "^1.2.1",

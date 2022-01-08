@@ -1,7 +1,7 @@
-import { DrawingContext, DrawingContextProvider } from "../context/types";
-import { SourceProvider } from "../source/types";
-import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from "./constants";
-import { Drawer } from "./types";
+import { DrawingContext, DrawingContextProvider } from '../context/types';
+import { SourceProvider } from '../source/types';
+import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from './constants';
+import { Drawer } from './types';
 
 /** Class implements painting on canvas */
 export class CanvasDrawer implements Drawer {
@@ -14,12 +14,18 @@ export class CanvasDrawer implements Drawer {
   /** Flag image */
   private flag: CanvasImageSource;
 
+  /**
+   * @param contextProvider - provides the context of the canvas
+   * @param fileProvider - to interact with the file system
+   */
   constructor(
     private contextProvider: DrawingContextProvider,
-    private fileProvider: SourceProvider
+    private fileProvider: SourceProvider,
   ) {
     this.context = this.contextProvider.getInstance();
-    if (!this.context) throw new Error("Failed to access the drawing context.");
+    if (!this.context) {
+      throw new Error('Failed to access the drawing context.');
+    }
 
     this.bomb = this.fileProvider.getImage('bomb');
     this.flag = this.fileProvider.getImage('flag');
@@ -35,8 +41,10 @@ export class CanvasDrawer implements Drawer {
    * @param color - square color
    * @param hasBorders - whether to draw borders at a square
    */
-  public drawSquare({ x, y }: Cell, size: PixelsAmount, color: string, hasBorders: boolean = true): void {
-    if (!this.context) return;
+  public drawSquare({ x, y }: Cell, size: PixelsAmount, color: string, hasBorders = true): void {
+    if (!this.context) {
+      return;
+    }
 
     this.context.fillStyle = color;
     this.context.fillRect(x, y, size, size);

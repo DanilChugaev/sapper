@@ -11,7 +11,7 @@ export interface Drawer {
      * @param hasBorders - whether to draw borders at a square
      */
     drawSquare(cell: Cell, size: PixelsAmount, color: string, hasBorders?: boolean): void;
-    
+
     /**
      * Draws square with number
      *
@@ -22,7 +22,7 @@ export interface Drawer {
      * @param value - number to draw
      */
     drawNumber(cell: Cell, size: PixelsAmount, value: number): void;
-    
+
     /**
      * Draws square with bomb
      *
@@ -43,4 +43,3 @@ export interface Drawer {
      */
     drawFlag(cell: Cell, size: PixelsAmount): void;
 }
-  

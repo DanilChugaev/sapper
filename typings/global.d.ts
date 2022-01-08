@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /** Number of cells of the playing field */
 type CellAmount = number;
 /** Number of pixels */

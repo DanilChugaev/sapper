@@ -1,10 +1,11 @@
-import { GameSettings } from "../settings/types";
+import { GameSettings } from '../settings/types';
 
 /** Structure of the field of the selected level of difficulty */
 export type MapStructure = {
     pixelsCountInCell: number,
     bombCount: number,
     bombLeft: number,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cells: any, // todo: fix type
     bombPositions: BombPositions,
     fieldSize: number,
@@ -14,7 +15,7 @@ export type MapStructure = {
 export interface SystemBuilder {
     /**
      * Build level
-     * 
+     *
      * @param settings - basic game settings
      */
     build(settings: GameSettings): MapStructure;
@@ -30,4 +31,4 @@ export type AreaStructure = {
     5?: Cell,
     6?: Cell,
     7?: Cell,
-}
+};

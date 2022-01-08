@@ -5,7 +5,7 @@ export type StorageName = string;
 export type StorageItem = {
     name: string;
     value: string;
-}
+};
 
 /** Long-term storage of game data */
 export interface StorageProvider {

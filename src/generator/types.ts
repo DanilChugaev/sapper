@@ -2,7 +2,7 @@
 export interface MathGenerator {
     /**
      * Returns a random integer in a specified range
-     * 
+     *
      * @param min - minimum number from the interval
      * @param max - maximum number from the interval
      */
@@ -10,7 +10,7 @@ export interface MathGenerator {
 
     /**
      * Rounds a number to an integer
-     * 
+     *
      * @param n - original number
      */
     getFloorNumber(n: number): number;
