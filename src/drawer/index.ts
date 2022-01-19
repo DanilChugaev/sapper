@@ -87,7 +87,7 @@ export class CanvasDrawer implements Drawer {
 
     const imageSize: number = this.getImageSize(size);
 
-    this.context.drawImage(this.bomb, x + (size / 4), y + (size / 4), imageSize, imageSize);
+    this.context.drawImage(this.bomb, this.getImageCoord(x, size), this.getImageCoord(y, size), imageSize, imageSize);
   }
 
   /**
@@ -103,7 +103,7 @@ export class CanvasDrawer implements Drawer {
 
     const imageSize: number = this.getImageSize(size);
 
-    this.context.drawImage(this.flag, x + (size / 4), y + (size / 4), imageSize, imageSize);
+    this.context.drawImage(this.flag, this.getImageCoord(x, size), this.getImageCoord(y, size), imageSize, imageSize);
   }
 
   /**
@@ -113,6 +113,16 @@ export class CanvasDrawer implements Drawer {
    */
   private getImageSize(size: number): number {
     return size / 2;
+  }
+
+  /**
+   * Returns coordinate of image in the cell
+   *
+   * @param cellCoord - x or y coordinate of cell
+   * @param size - square size in pixels
+   */
+  private getImageCoord(cellCoord: number, size: number): number {
+    return cellCoord + (size / 4);
   }
 
   /**
