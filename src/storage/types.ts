@@ -1,5 +1,6 @@
 /** Name of key in the store */
 export type StorageName = string;
+/** Value in the store */
 export type StorageValue = string;
 
 /** Stored item */
@@ -22,5 +23,5 @@ export interface StorageProvider {
      *
      * @param name - name of key in the store
      */
-    get(name: StorageName): string;
+    get(name: StorageName): StorageValue;
 }
