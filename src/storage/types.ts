@@ -1,10 +1,11 @@
 /** Name of key in the store */
 export type StorageName = string;
+export type StorageValue = string;
 
 /** Stored item */
 export type StorageItem = {
-    name: string;
-    value: string;
+    name: StorageName;
+    value: StorageValue;
 };
 
 /** Long-term storage of game data */

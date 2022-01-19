@@ -1,4 +1,4 @@
-import { StorageProvider, StorageItem, StorageName } from './types';
+import { StorageProvider, StorageItem, StorageName, StorageValue } from './types';
 
 /** Long-term storage of game data */
 export class DataStorage implements StorageProvider {
@@ -25,7 +25,7 @@ export class DataStorage implements StorageProvider {
    *
    * @param name - name of key in the store
    */
-  public get(name: StorageName): string {
+  public get(name: StorageName): StorageValue {
     return this.storage.getItem(name);
   }
 }
