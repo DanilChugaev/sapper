@@ -5,6 +5,7 @@ export type MapStructure = {
     pixelsCountInCell: number,
     bombCount: number,
     bombLeft: number,
+    usedCells: number,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cells: any, // todo: fix type
     bombPositions: BombPositions,

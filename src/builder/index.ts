@@ -63,6 +63,7 @@ export class LevelBuilder implements SystemBuilder {
         pixelsCountInCell: this.canvasSize / this.fieldSize,
         bombCount: this.bombCount,
         bombLeft: this.bombCount,
+        usedCells: 0,
         cells: {},
         bombPositions: [],
         fieldSize: this.fieldSize,

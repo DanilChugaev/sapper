@@ -263,6 +263,8 @@ export class Sapper implements Game {
           this.openEmptySquare(cell); // draw an empty cell
           this.recursiveOpenArea(cell); // go through the neighbors and draw the cells until the number appears in the cell
         }
+
+        this.checkIfGameShouldStopped();
       }
     }
 
@@ -342,6 +344,7 @@ export class Sapper implements Game {
       }, this.cellPixelsSize, MAIN_BG_COLOR);
 
       cell.isOpen = true;
+      this.system.usedCells++;
     }
 
     /**
@@ -356,6 +359,7 @@ export class Sapper implements Game {
       }, this.cellPixelsSize, cell.value);
 
       cell.isOpen = true;
+      this.system.usedCells++;
     }
 
     /**
@@ -370,6 +374,7 @@ export class Sapper implements Game {
       }, this.cellPixelsSize);
 
       cell.isOpen = true;
+      this.system.usedCells++;
     }
 
     /** Open all bombs on the field */
@@ -397,6 +402,7 @@ export class Sapper implements Game {
       }, this.cellPixelsSize);
 
       cell.hasFlag = true;
+      this.system.usedCells++;
 
       this.system.bombLeft = this.system.bombLeft - 1;
       // displaying the number of remaining bombs over the field
@@ -406,10 +412,7 @@ export class Sapper implements Game {
         this.countCorrectlySelectedBombs++;
       }
 
-      // stop the game with a win if all the bombs have run out and are marked with flags correctly
-      if (this.system.bombLeft === 0 && this.system.bombCount === this.countCorrectlySelectedBombs) {
-        this.stopGame(true);
-      }
+      this.checkIfGameShouldStopped();
     }
 
     /**
@@ -424,6 +427,7 @@ export class Sapper implements Game {
       }, this.cellPixelsSize, INITIAL_FIELD_BG_COLOR, false);
 
       cell.hasFlag = false;
+      this.system.usedCells--;
 
       this.system.bombLeft = this.system.bombLeft + 1;
       // displaying the number of remaining bombs over the field
@@ -463,5 +467,28 @@ export class Sapper implements Game {
       setTimeout(() => {
         this.resultContainer.classList.add('result-container--is-visible');
       }, 50);
+    }
+
+    /**
+     * Check the conditions for stopping the game
+     */
+    private checkIfGameShouldStopped(): void {
+      // has zero bomb
+      if (!(this.system.bombLeft === 0)) {
+        return;
+      }
+
+      // all bombs are correctly selected
+      if (!(this.system.bombCount === this.countCorrectlySelectedBombs)) {
+        return;
+      }
+
+      // all cells are opened
+      if (!(this.system.usedCells === (this.system.fieldSize * this.system.fieldSize))) {
+        return;
+      }
+
+      // stop the game with a win if all the bombs have run out and are marked with flags correctly
+      this.stopGame(true);
     }
 }
