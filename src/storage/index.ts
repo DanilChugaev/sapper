@@ -3,6 +3,13 @@ import { StorageProvider, StorageItem, StorageName, StorageValue } from './types
 /** Long-term storage of game data */
 export class DataStorage implements StorageProvider {
   /**
+   * @param storage - Web Storage API interface provides access to a particular domain's session or local storage
+   */
+  constructor(
+    private storage: Storage,
+  ) {}
+
+  /**
    * Saves an item to storage
    *
    * @param storageItem - stored item
@@ -10,7 +17,7 @@ export class DataStorage implements StorageProvider {
    * @param storageItem.value - the key value in the store
    */
   public save({ name, value }: StorageItem): void {
-    window.localStorage.setItem(name, value);
+    this.storage.setItem(name, value);
   }
 
   /**
@@ -19,6 +26,6 @@ export class DataStorage implements StorageProvider {
    * @param name - name of key in the store
    */
   public get(name: StorageName): StorageValue {
-    return window.localStorage.getItem(name);
+    return this.storage.getItem(name);
   }
 }
