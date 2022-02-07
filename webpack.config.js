@@ -1,11 +1,12 @@
 const path = require('path');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { di } = require('@wessberg/di-compiler');
 
 module.exports = {
   entry: './src/index.ts',
   devtool: 'inline-source-map',
-  mode: "development",
+  mode: 'development',
   module: {
     rules: [
       {
@@ -20,14 +21,21 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
         ],
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers: (program) => di({ program }),
+            },
+          },
+        ],
         exclude: /node_modules/,
       },
     ],
@@ -41,10 +49,10 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'index.css'
+      filename: 'index.css',
     }),
     new HtmlWebpackPlugin({
-      template: "src/index.html",
+      template: 'src/index.html',
     }),
   ],
 };
