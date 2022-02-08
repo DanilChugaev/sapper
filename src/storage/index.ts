@@ -6,7 +6,7 @@ export class DataStorage implements StorageProvider {
    * @param storage - Web Storage API interface provides access to a particular domain's session or local storage
    */
   constructor(
-        private storage: Storage,
+    private storage: Storage,
   ) {}
 
   /**

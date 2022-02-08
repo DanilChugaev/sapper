@@ -3,12 +3,10 @@ import { MathGenerator } from './types';
 /** Math number generator */
 export class Generator implements MathGenerator {
   /**
-   * @param getRandom - returns random number
-   * @param getFloor - returns floor number
+   * @param math - returns Math object
    */
   constructor(
-        private getRandom: () => number,
-        private getFloor: (n: number) => number,
+      private math: Math,
   ) {}
 
   /**
@@ -18,7 +16,7 @@ export class Generator implements MathGenerator {
    * @param max - maximum number from the interval
    */
   public getRandomArbitrary(min: number, max: number): number {
-    return this.getFloorNumber(this.getRandom() * (max - min)) + min;
+    return this.getFloorNumber(this.math.random() * (max - min)) + min;
   }
 
   /**
@@ -27,6 +25,6 @@ export class Generator implements MathGenerator {
    * @param n - original number
    */
   public getFloorNumber(n: number): number {
-    return this.getFloor(n);
+    return this.math.floor(n);
   }
 }

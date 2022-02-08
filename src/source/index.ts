@@ -8,7 +8,9 @@ export class FileSource implements SourceProvider {
   /**
    * @param ImageProvider - returns image object
    */
-  constructor(private ImageProvider: typeof Image) {}
+  constructor(
+    private ImageProvider: typeof Image,
+  ) {}
 
   /**
    * Returns image file
