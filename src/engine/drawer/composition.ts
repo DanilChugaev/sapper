@@ -1,4 +1,4 @@
-import { container } from '../composition';
+import { container } from '../../composition';
 import { Drawer } from './types';
 import { CanvasDrawer } from './index';
 

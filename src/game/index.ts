@@ -1,11 +1,11 @@
 import { MapStructure, SystemBuilder } from '../builder/types';
-import { DrawingContextProvider } from '../context/types';
-import { ElementSource } from '../dom/types';
-import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../drawer/constants';
-import { Drawer } from '../drawer/types';
-import { MathGenerator } from '../generator/types';
-import { GameSettings } from '../settings/types';
-import { StorageProvider } from '../storage/types';
+import { DrawingContextProvider } from '../engine/context/types';
+import { ElementSource } from '../engine/dom/types';
+import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
+import { Drawer } from '../engine/drawer/types';
+import { MathGenerator } from '../engine/generator/types';
+import { GameSettings } from '../engine/settings/types';
+import { StorageProvider } from '../engine/storage/types';
 import { Game } from './types';
 
 /** The main class of the game */

@@ -1,7 +1,7 @@
 import { SourceProvider } from './types';
 
-import '../img/bomb.png';
-import '../img/flag.png';
+import '../../img/bomb.png';
+import '../../img/flag.png';
 
 /** To interact with the file system */
 export class FileSource implements SourceProvider {

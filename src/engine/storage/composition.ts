@@ -1,4 +1,4 @@
-import { container } from '../composition';
+import { container } from '../../composition';
 import { StorageProvider } from './types';
 import { DataStorage } from './index';
 

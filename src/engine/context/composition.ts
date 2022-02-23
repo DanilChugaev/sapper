@@ -1,4 +1,4 @@
-import { container } from '../composition';
+import { container } from '../../composition';
 import { DrawingContextProvider } from './types';
 import { CanvasContextProvider } from './index';
 

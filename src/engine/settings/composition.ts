@@ -1,4 +1,4 @@
-import { container } from '../composition';
+import { container } from '../../composition';
 import { GameSettings } from './types';
 import settings from './index';
 

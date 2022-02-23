@@ -1,7 +1,7 @@
-import { Complexity, ComplexityList, GameSettings } from '../settings/types';
+import { Complexity, ComplexityList, GameSettings } from '../engine/settings/types';
 import { AreaStructure, MapStructure, SystemBuilder } from './types';
 import { AREA_STRUCTURE } from './constants';
-import { MathGenerator } from '../generator/types';
+import { MathGenerator } from '../engine/generator/types';
 
 /** Class responsible for creating levels based on levels settings */
 export class LevelBuilder implements SystemBuilder {

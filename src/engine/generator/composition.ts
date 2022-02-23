@@ -1,4 +1,4 @@
-import { container } from '../composition';
+import { container } from '../../composition';
 import { MathGenerator } from './types';
 import { Generator } from './index';
 
