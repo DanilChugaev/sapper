@@ -1,4 +1,4 @@
-import { container } from './composition/index';
+import { container } from './di-register';
 import { Game } from './game/types';
 
 import './index.scss';

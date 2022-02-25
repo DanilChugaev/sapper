@@ -1,4 +1,4 @@
-import { container } from '../../composition';
+import { container } from '../../di-register';
 import { ElementSource } from './types';
 import { DomSource } from './index';
 

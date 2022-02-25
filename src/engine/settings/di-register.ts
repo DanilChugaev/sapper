@@ -1,4 +1,4 @@
-import { container } from '../../composition';
+import { container } from '../../di-register';
 import { GameSettings } from './types';
 import settings from './index';
 

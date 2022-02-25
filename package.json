@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run bundle && npm-run-all --parallel watch serve",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "webpack",
+    "dev": "npm run build && npm-run-all --parallel watch serve",
+    "build": "webpack",
     "watch": "webpack --watch",
     "serve": "cd dist && live-server",
     "lint": "eslint src/*/*.ts --fix",
