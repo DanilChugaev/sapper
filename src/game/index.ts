@@ -1,4 +1,4 @@
-import { MapStructure, SystemBuilder } from '../builder/types';
+import { MapStructure, BuilderInterface } from '../builder/types';
 import { DrawingContextProvider } from '../engine/context/types';
 import { DomInterface } from '../engine/dom/types';
 import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
@@ -64,7 +64,7 @@ export class Sapper implements Game {
      * @param contextProvider - provides the context of the canvas
      * @param drawerInstance - for painting on canvas
      * @param domInstance - allows interact with the DOM tree
-     * @param builder - responsible for creating levels
+     * @param builderInstance - responsible for creating levels
      * @param mathInstance - math number generator
      * @param storageInstance - long-term storage of game data
      */
@@ -73,7 +73,7 @@ export class Sapper implements Game {
         private contextProvider: DrawingContextProvider,
         private drawerInstance: DrawerInterface,
         private domInstance: DomInterface,
-        private builder: SystemBuilder,
+        private builderInstance: BuilderInterface,
         private mathInstance: MathInterface,
         private storageInstance: StorageInterface,
     ) {
@@ -119,7 +119,7 @@ export class Sapper implements Game {
 
     /** Generate level and start the game */
     private start(): void {
-      this.system = this.builder.build(this.settings);
+      this.system = this.builderInstance.build(this.settings);
       this.cellPixelsSize = this.system.pixelsCountInCell;
 
       // display bombs left and timer above the field

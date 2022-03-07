@@ -1,5 +1,5 @@
 import { container } from '../di-register';
-import { SystemBuilder } from './types';
-import { LevelBuilder } from './index';
+import { BuilderInterface } from './types';
+import { BuilderClass } from './index';
 
-container.registerSingleton<SystemBuilder, LevelBuilder>();
+container.registerSingleton<BuilderInterface, BuilderClass>();

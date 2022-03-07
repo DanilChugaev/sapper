@@ -13,7 +13,7 @@ export type MapStructure = {
 };
 
 /** Responsible for creating levels */
-export interface SystemBuilder {
+export interface BuilderInterface {
     /**
      * Build level
      *

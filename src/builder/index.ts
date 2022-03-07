@@ -1,10 +1,10 @@
 import { Complexity, ComplexityList, GameSettings } from '../engine/settings/types';
-import { AreaStructure, MapStructure, SystemBuilder } from './types';
+import { AreaStructure, MapStructure, BuilderInterface } from './types';
 import { AREA_STRUCTURE } from './constants';
 import { MathInterface } from '../engine/math/types';
 
 /** Class responsible for creating levels based on levels settings */
-export class LevelBuilder implements SystemBuilder {
+export class BuilderClass implements BuilderInterface {
     /** Size of the field in cells */
     private fieldSize: CellAmount;
 
