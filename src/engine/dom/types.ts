@@ -1,5 +1,5 @@
 /** Allows interact with the DOM tree */
-export interface ElementSource {
+export interface DomInterface {
     /**
      * Create HTML element
      *

@@ -1,6 +1,6 @@
 import { MapStructure, SystemBuilder } from '../builder/types';
 import { DrawingContextProvider } from '../engine/context/types';
-import { ElementSource } from '../engine/dom/types';
+import { DomInterface } from '../engine/dom/types';
 import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
 import { Drawer } from '../engine/drawer/types';
 import { MathGenerator } from '../engine/generator/types';
@@ -63,7 +63,7 @@ export class Sapper implements Game {
      * @param settings - basic game settings
      * @param contextProvider - provides the context of the canvas
      * @param drawer - for painting on canvas
-     * @param elementSource - allows interact with the DOM tree
+     * @param domInstance - allows interact with the DOM tree
      * @param builder - responsible for creating levels
      * @param generator - math number generator
      * @param storage - long-term storage of game data
@@ -72,35 +72,35 @@ export class Sapper implements Game {
         private settings: GameSettings,
         private contextProvider: DrawingContextProvider,
         private drawer: Drawer,
-        private elementSource: ElementSource,
+        private domInstance: DomInterface,
         private builder: SystemBuilder,
         private generator: MathGenerator,
         private storage: StorageProvider,
     ) {
-      this.select = <HTMLSelectElement>elementSource.getElement('select-level');
-      this.startGameButton = elementSource.getElement('start-game');
-      this.levelTime = elementSource.getElement('level-time');
-      this.bestLevelTime = elementSource.getElement('best-level-time');
-      this.canvas = elementSource.getElement('canvas');
-      this.gameContainer = elementSource.getElement('game-container');
-      this.resultContainer = elementSource.getElement('result-container');
-      this.winContainer = elementSource.getElement('win-container');
-      this.leftBombContainer = elementSource.getElement('left-bomb');
-      this.timerContainer = elementSource.getElement('timer');
-      this.currentTimeContainer = elementSource.getElement('current-time-container');
-      this.bestTimeContainer = elementSource.getElement('best-time-container');
+      this.select = <HTMLSelectElement>domInstance.getElement('select-level');
+      this.startGameButton = domInstance.getElement('start-game');
+      this.levelTime = domInstance.getElement('level-time');
+      this.bestLevelTime = domInstance.getElement('best-level-time');
+      this.canvas = domInstance.getElement('canvas');
+      this.gameContainer = domInstance.getElement('game-container');
+      this.resultContainer = domInstance.getElement('result-container');
+      this.winContainer = domInstance.getElement('win-container');
+      this.leftBombContainer = domInstance.getElement('left-bomb');
+      this.timerContainer = domInstance.getElement('timer');
+      this.currentTimeContainer = domInstance.getElement('current-time-container');
+      this.bestTimeContainer = domInstance.getElement('best-time-container');
     }
 
     /** Initializes game engine after the DOM has loaded */
     public init(): void {
-      this.elementSource.afterLoad(() => {
+      this.domInstance.afterLoad(() => {
         const selectedLevel = this.storage.get('level') || 'easy';
 
         /** if we have previously selected the level, then set it again */
         this.changeLevelInSettings(selectedLevel);
 
         for (const key in this.settings.levels) {
-          const option = <HTMLOptionElement> this.elementSource.createElement('option');
+          const option = <HTMLOptionElement> this.domInstance.createElement('option');
 
           option.textContent = key;
           option.value = key;

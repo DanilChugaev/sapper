@@ -1,5 +1,5 @@
 import { container } from '../../di-register';
-import { ElementSource } from './types';
-import { DomSource } from './index';
+import { DomInterface } from './types';
+import { DomClass } from './index';
 
-container.registerSingleton<ElementSource, DomSource>();
+container.registerSingleton<DomInterface, DomClass>();

@@ -1,4 +1,4 @@
-import { ElementSource } from '../dom/types';
+import { DomInterface } from '../dom/types';
 import { GameSettings } from '../settings/types';
 import { DrawingContext, DrawingContextProvider } from './types';
 
@@ -11,14 +11,14 @@ export class CanvasContextProvider implements DrawingContextProvider {
   private context: Nullable<DrawingContext> = null;
 
   /**
-   * @param elementSource - allows interact with the DOM tree
+   * @param domInstance - allows interact with the DOM tree
    * @param settings - basic game settings
    */
   constructor(
-    private elementSource: ElementSource,
+    private domInstance: DomInterface,
     private settings: GameSettings,
   ) {
-    const canvas = this.elementSource.getElement('canvas');
+    const canvas = this.domInstance.getElement('canvas');
 
     if (!canvas) {
       throw new Error('Failed to find a canvas.');

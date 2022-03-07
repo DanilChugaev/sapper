@@ -1,7 +1,7 @@
-import { ElementSource } from './types';
+import { DomInterface } from './types';
 
 /** Class allows interact with the DOM tree */
-export class DomSource implements ElementSource {
+export class DomClass implements DomInterface {
   /**
    * @param window - window containing a DOM document
    */
