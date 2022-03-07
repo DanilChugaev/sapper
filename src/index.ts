@@ -1,8 +1,8 @@
 import { container } from './di-register';
-import { Game } from './game/types';
+import { GameInterface } from './game/types';
 
 import './index.scss';
 
-const sapper = container.get<Game>();
+const sapper = container.get<GameInterface>();
 
 sapper.init();

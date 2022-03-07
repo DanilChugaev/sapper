@@ -1,5 +1,5 @@
 import { container } from '../di-register';
-import { Game } from './types';
+import { GameInterface } from './types';
 import { Sapper } from './index';
 
-container.registerSingleton<Game, Sapper>();
+container.registerSingleton<GameInterface, Sapper>();

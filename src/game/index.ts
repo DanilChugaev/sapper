@@ -6,10 +6,10 @@ import { DrawerInterface } from '../engine/drawer/types';
 import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../engine/settings/types';
 import { StorageInterface } from '../engine/storage/types';
-import { Game } from './types';
+import { GameInterface } from './types';
 
 /** The main class of the game */
-export class Sapper implements Game {
+export class Sapper implements GameInterface {
     /** HTML select for choice of difficulty level */
     private select: Nullable<HTMLSelectElement> = null;
 
