@@ -1,10 +1,10 @@
 /** Canvas context */
-export type DrawingContext = Nullable<CanvasRenderingContext2D>;
+export type CanvasContext = Nullable<CanvasRenderingContext2D>;
 
 /** Provides the context of the canvas */
-export interface DrawingContextProvider {
+export interface ContextInterface {
   /** Returns canvas 2d context */
-  getInstance(): DrawingContext;
+  getInstance(): CanvasContext;
 
   /**
    * Listen to clicking on the canvas

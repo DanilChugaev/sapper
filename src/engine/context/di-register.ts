@@ -1,5 +1,5 @@
 import { container } from '../../di-register';
-import { DrawingContextProvider } from './types';
-import { CanvasContextProvider } from './index';
+import { ContextInterface } from './types';
+import { ContextClass } from './index';
 
-container.registerSingleton<DrawingContextProvider, CanvasContextProvider>();
+container.registerSingleton<ContextInterface, ContextClass>();

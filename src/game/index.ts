@@ -1,5 +1,5 @@
 import { MapStructure, BuilderInterface } from '../builder/types';
-import { DrawingContextProvider } from '../engine/context/types';
+import { ContextInterface } from '../engine/context/types';
 import { DomInterface } from '../engine/dom/types';
 import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
 import { DrawerInterface } from '../engine/drawer/types';
@@ -61,7 +61,7 @@ export class Sapper implements Game {
 
     /**
      * @param settings - basic game settings
-     * @param contextProvider - provides the context of the canvas
+     * @param contextInstance - provides the context of the canvas
      * @param drawerInstance - for painting on canvas
      * @param domInstance - allows interact with the DOM tree
      * @param builderInstance - responsible for creating levels
@@ -70,7 +70,7 @@ export class Sapper implements Game {
      */
     constructor(
         private settings: GameSettings,
-        private contextProvider: DrawingContextProvider,
+        private contextInstance: ContextInterface,
         private drawerInstance: DrawerInterface,
         private domInstance: DomInterface,
         private builderInstance: BuilderInterface,
@@ -130,8 +130,8 @@ export class Sapper implements Game {
       this.makeInitialFill();
       this.startTimer();
 
-      this.contextProvider.listenCanvasClick(this.checkClick.bind(this));
-      this.contextProvider.listenCanvasContextMenu(this.checkRightButtonClick.bind(this));
+      this.contextInstance.listenCanvasClick(this.checkClick.bind(this));
+      this.contextInstance.listenCanvasContextMenu(this.checkRightButtonClick.bind(this));
     }
 
     /** Start timer for counting the level time (in seconds) */

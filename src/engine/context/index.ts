@@ -1,14 +1,14 @@
 import { DomInterface } from '../dom/types';
 import { GameSettings } from '../settings/types';
-import { DrawingContext, DrawingContextProvider } from './types';
+import { CanvasContext, ContextInterface } from './types';
 
 /** Provides the context of the canvas */
-export class CanvasContextProvider implements DrawingContextProvider {
+export class ContextClass implements ContextInterface {
   /** Game will be drawn on this canvas */
   private canvas: Nullable<HTMLCanvasElement> = null;
 
   /** Canvas 2d context */
-  private context: Nullable<DrawingContext> = null;
+  private context: Nullable<CanvasContext> = null;
 
   /**
    * @param domInstance - allows interact with the DOM tree
@@ -30,7 +30,7 @@ export class CanvasContextProvider implements DrawingContextProvider {
   }
 
   /** Returns canvas 2d context */
-  public getInstance(): DrawingContext {
+  public getInstance(): CanvasContext {
     return this.context;
   }
 

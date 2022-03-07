@@ -1,4 +1,4 @@
-import { DrawingContext, DrawingContextProvider } from '../context/types';
+import { CanvasContext, ContextInterface } from '../context/types';
 import { SourceInterface } from '../source/types';
 import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from './constants';
 import { DrawerInterface } from './types';
@@ -6,7 +6,7 @@ import { DrawerInterface } from './types';
 /** Class implements painting on canvas */
 export class DrawerClass implements DrawerInterface {
   /** Canvas 2d context */
-  private context: DrawingContext = null;
+  private context: CanvasContext = null;
 
   /** Bomb image */
   private bomb: CanvasImageSource;
@@ -15,14 +15,14 @@ export class DrawerClass implements DrawerInterface {
   private flag: CanvasImageSource;
 
   /**
-   * @param contextProvider - provides the context of the canvas
+   * @param contextInstance - provides the context of the canvas
    * @param sourceInstance - to interact with the file system
    */
   constructor(
-    private contextProvider: DrawingContextProvider,
+    private contextInstance: ContextInterface,
     private sourceInstance: SourceInterface,
   ) {
-    this.context = this.contextProvider.getInstance();
+    this.context = this.contextInstance.getInstance();
     if (!this.context) {
       throw new Error('Failed to access the drawing context.');
     }
