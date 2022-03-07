@@ -1,5 +1,5 @@
 import { container } from '../../di-register';
-import { SourceProvider } from './types';
-import { FileSource } from './index';
+import { SourceInterface } from './types';
+import { SourceClass } from './index';
 
-container.registerSingleton<SourceProvider, FileSource>();
+container.registerSingleton<SourceInterface, SourceClass>();

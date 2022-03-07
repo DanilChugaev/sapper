@@ -1,5 +1,5 @@
 /** To interact with the file system */
-export interface SourceProvider {
+export interface SourceInterface {
     /**
      * Returns image file
      *
