@@ -1,7 +1,7 @@
-import { MathGenerator } from './types';
+import { MathInterface } from './types';
 
 /** Math number generator */
-export class Generator implements MathGenerator {
+export class MathClass implements MathInterface {
   /**
    * @param math - returns Math object
    */

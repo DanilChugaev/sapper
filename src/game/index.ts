@@ -3,7 +3,7 @@ import { DrawingContextProvider } from '../engine/context/types';
 import { DomInterface } from '../engine/dom/types';
 import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
 import { DrawerInterface } from '../engine/drawer/types';
-import { MathGenerator } from '../engine/generator/types';
+import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../engine/settings/types';
 import { StorageProvider } from '../engine/storage/types';
 import { Game } from './types';
@@ -65,7 +65,7 @@ export class Sapper implements Game {
      * @param drawerInstance - for painting on canvas
      * @param domInstance - allows interact with the DOM tree
      * @param builder - responsible for creating levels
-     * @param generator - math number generator
+     * @param mathInstance - math number generator
      * @param storage - long-term storage of game data
      */
     constructor(
@@ -74,7 +74,7 @@ export class Sapper implements Game {
         private drawerInstance: DrawerInterface,
         private domInstance: DomInterface,
         private builder: SystemBuilder,
-        private generator: MathGenerator,
+        private mathInstance: MathInterface,
         private storage: StorageProvider,
     ) {
       this.select = <HTMLSelectElement>domInstance.getElement('select-level');
@@ -295,8 +295,8 @@ export class Sapper implements Game {
      * @param offsetY - offset of the mouse cursor along the Y axis from the edge of the canvas
      */
     private getCell(offsetX: number, offsetY: number): Cell {
-      const x = this.generator.getFloorNumber(offsetX / this.system.pixelsCountInCell);
-      const y = this.generator.getFloorNumber(offsetY / this.system.pixelsCountInCell);
+      const x = this.mathInstance.getFloorNumber(offsetX / this.system.pixelsCountInCell);
+      const y = this.mathInstance.getFloorNumber(offsetY / this.system.pixelsCountInCell);
 
       return this.system.cells[y][x];
     }

@@ -1,7 +1,7 @@
 import { Complexity, ComplexityList, GameSettings } from '../engine/settings/types';
 import { AreaStructure, MapStructure, SystemBuilder } from './types';
 import { AREA_STRUCTURE } from './constants';
-import { MathGenerator } from '../engine/generator/types';
+import { MathInterface } from '../engine/math/types';
 
 /** Class responsible for creating levels based on levels settings */
 export class LevelBuilder implements SystemBuilder {
@@ -15,10 +15,10 @@ export class LevelBuilder implements SystemBuilder {
     private bombCount: number;
 
     /**
-     * @param generator - math number generator
+     * @param mathInstance - math number generator
      */
     constructor(
-        private generator: MathGenerator,
+        private mathInstance: MathInterface,
     ) {}
 
     /**
@@ -148,11 +148,11 @@ export class LevelBuilder implements SystemBuilder {
       const bombPositions: BombPositions = [];
 
       for (let index = 0; index < this.bombCount; index++) {
-        let randomPosition: number = this.generator.getRandomArbitrary(1, cellsCount);
+        let randomPosition: number = this.mathInstance.getRandomArbitrary(1, cellsCount);
 
         // if the generated position is already in the list, we generate it again
         while (bombPositions.includes(randomPosition)) {
-          randomPosition = this.generator.getRandomArbitrary(1, cellsCount);
+          randomPosition = this.mathInstance.getRandomArbitrary(1, cellsCount);
         }
 
         bombPositions.push(randomPosition);

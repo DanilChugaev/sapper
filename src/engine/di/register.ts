@@ -3,7 +3,7 @@ import { container } from './core';
 import '../context/di-register';
 import '../dom/di-register';
 import '../drawer/di-register';
-import '../generator/di-register';
+import '../math/di-register';
 import '../settings/di-register';
 import '../source/di-register';
 import '../storage/di-register';
