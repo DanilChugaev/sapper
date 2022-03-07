@@ -5,7 +5,7 @@ import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constant
 import { DrawerInterface } from '../engine/drawer/types';
 import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../engine/settings/types';
-import { StorageProvider } from '../engine/storage/types';
+import { StorageInterface } from '../engine/storage/types';
 import { Game } from './types';
 
 /** The main class of the game */
@@ -66,7 +66,7 @@ export class Sapper implements Game {
      * @param domInstance - allows interact with the DOM tree
      * @param builder - responsible for creating levels
      * @param mathInstance - math number generator
-     * @param storage - long-term storage of game data
+     * @param storageInstance - long-term storage of game data
      */
     constructor(
         private settings: GameSettings,
@@ -75,7 +75,7 @@ export class Sapper implements Game {
         private domInstance: DomInterface,
         private builder: SystemBuilder,
         private mathInstance: MathInterface,
-        private storage: StorageProvider,
+        private storageInstance: StorageInterface,
     ) {
       this.select = <HTMLSelectElement>domInstance.getElement('select-level');
       this.startGameButton = domInstance.getElement('start-game');
@@ -94,7 +94,7 @@ export class Sapper implements Game {
     /** Initializes game engine after the DOM has loaded */
     public init(): void {
       this.domInstance.afterLoad(() => {
-        const selectedLevel = this.storage.get('level') || 'easy';
+        const selectedLevel = this.storageInstance.get('level') || 'easy';
 
         /** if we have previously selected the level, then set it again */
         this.changeLevelInSettings(selectedLevel);
@@ -157,9 +157,9 @@ export class Sapper implements Game {
 
       if (isWin) {
         const currentTime = this.timerContainer.textContent;
-        const currentLevel = this.storage.get('level');
+        const currentLevel = this.storageInstance.get('level');
         const bestTimeStorageName = `best-time-${currentLevel}`;
-        const bestTime = this.storage.get(bestTimeStorageName);
+        const bestTime = this.storageInstance.get(bestTimeStorageName);
         let time = '';
 
         // display current time on the finish screen
@@ -171,7 +171,7 @@ export class Sapper implements Game {
           time = currentTime;
         }
 
-        this.storage.save({
+        this.storageInstance.save({
           name: bestTimeStorageName,
           value: time,
         });
@@ -190,7 +190,7 @@ export class Sapper implements Game {
       // @ts-ignore
       this.changeLevelInSettings(event.target.value);
 
-      this.storage.save({
+      this.storageInstance.save({
         name: 'level',
         // @ts-ignore
         value: event.target.value,
@@ -203,7 +203,7 @@ export class Sapper implements Game {
      * @param selectedLevel - nama of selected level
      */
     private changeLevelInSettings(selectedLevel: string): void {
-      const bestTime = this.storage.get(`best-time-${selectedLevel}`);
+      const bestTime = this.storageInstance.get(`best-time-${selectedLevel}`);
 
       // if the level was passed earlier, then display its best time on the start screen
       if (bestTime) {

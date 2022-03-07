@@ -10,7 +10,7 @@ export type StorageItem = {
 };
 
 /** Long-term storage of game data */
-export interface StorageProvider {
+export interface StorageInterface {
     /**
      * Saves an item to storage
      *

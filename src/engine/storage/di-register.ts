@@ -1,5 +1,5 @@
 import { container } from '../../di-register';
-import { StorageProvider } from './types';
-import { DataStorage } from './index';
+import { StorageInterface } from './types';
+import { StorageClass } from './index';
 
-container.registerSingleton<StorageProvider, DataStorage>();
+container.registerSingleton<StorageInterface, StorageClass>();

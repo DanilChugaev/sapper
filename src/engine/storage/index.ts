@@ -1,7 +1,7 @@
-import { StorageProvider, StorageItem, StorageName, StorageValue } from './types';
+import { StorageInterface, StorageItem, StorageName, StorageValue } from './types';
 
 /** Long-term storage of game data */
-export class DataStorage implements StorageProvider {
+export class StorageClass implements StorageInterface {
   /**
    * @param storage - Web Storage API interface provides access to a particular domain's session or local storage
    */
