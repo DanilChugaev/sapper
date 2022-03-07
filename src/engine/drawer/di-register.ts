@@ -1,5 +1,5 @@
 import { container } from '../../di-register';
-import { Drawer } from './types';
-import { CanvasDrawer } from './index';
+import { DrawerInterface } from './types';
+import { DrawerClass } from './index';
 
-container.registerSingleton<Drawer, CanvasDrawer>();
+container.registerSingleton<DrawerInterface, DrawerClass>();

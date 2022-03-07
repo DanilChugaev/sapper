@@ -2,7 +2,7 @@ import { MapStructure, SystemBuilder } from '../builder/types';
 import { DrawingContextProvider } from '../engine/context/types';
 import { DomInterface } from '../engine/dom/types';
 import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
-import { Drawer } from '../engine/drawer/types';
+import { DrawerInterface } from '../engine/drawer/types';
 import { MathGenerator } from '../engine/generator/types';
 import { GameSettings } from '../engine/settings/types';
 import { StorageProvider } from '../engine/storage/types';
@@ -62,7 +62,7 @@ export class Sapper implements Game {
     /**
      * @param settings - basic game settings
      * @param contextProvider - provides the context of the canvas
-     * @param drawer - for painting on canvas
+     * @param drawerInstance - for painting on canvas
      * @param domInstance - allows interact with the DOM tree
      * @param builder - responsible for creating levels
      * @param generator - math number generator
@@ -71,7 +71,7 @@ export class Sapper implements Game {
     constructor(
         private settings: GameSettings,
         private contextProvider: DrawingContextProvider,
-        private drawer: Drawer,
+        private drawerInstance: DrawerInterface,
         private domInstance: DomInterface,
         private builder: SystemBuilder,
         private generator: MathGenerator,
@@ -235,7 +235,7 @@ export class Sapper implements Game {
     private makeInitialFill(): void {
       const size: PixelsAmount = this.settings.canvasSize;
 
-      this.drawer.drawSquare({
+      this.drawerInstance.drawSquare({
         x: 0,
         y: 0,
       }, size, INITIAL_FIELD_BG_COLOR);
@@ -338,7 +338,7 @@ export class Sapper implements Game {
      * @param cell - game board cell
      */
     private openEmptySquare(cell: Cell): void {
-      this.drawer.drawSquare({
+      this.drawerInstance.drawSquare({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
       }, this.cellPixelsSize, MAIN_BG_COLOR);
@@ -353,7 +353,7 @@ export class Sapper implements Game {
      * @param cell - game board cell
      */
     private openNumberSquare(cell: Cell): void {
-      this.drawer.drawNumber({
+      this.drawerInstance.drawNumber({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
       }, this.cellPixelsSize, cell.value);
@@ -368,7 +368,7 @@ export class Sapper implements Game {
      * @param cell - game board cell
      */
     private openBombCell(cell: Cell): void {
-      this.drawer.drawBomb({
+      this.drawerInstance.drawBomb({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
       }, this.cellPixelsSize);
@@ -396,7 +396,7 @@ export class Sapper implements Game {
      * @param cell - game board cell
      */
     private setFlag(cell: Cell): void {
-      this.drawer.drawFlag({
+      this.drawerInstance.drawFlag({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
       }, this.cellPixelsSize);
@@ -421,7 +421,7 @@ export class Sapper implements Game {
      * @param cell - game board cell
      */
     private removeFlag(cell: Cell): void {
-      this.drawer.drawSquare({
+      this.drawerInstance.drawSquare({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
       }, this.cellPixelsSize, INITIAL_FIELD_BG_COLOR, false);

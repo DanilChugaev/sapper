@@ -1,10 +1,10 @@
 import { DrawingContext, DrawingContextProvider } from '../context/types';
 import { SourceProvider } from '../source/types';
 import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from './constants';
-import { Drawer } from './types';
+import { DrawerInterface } from './types';
 
 /** Class implements painting on canvas */
-export class CanvasDrawer implements Drawer {
+export class DrawerClass implements DrawerInterface {
   /** Canvas 2d context */
   private context: DrawingContext = null;
 

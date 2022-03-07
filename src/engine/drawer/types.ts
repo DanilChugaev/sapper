@@ -1,5 +1,5 @@
 /** For painting on canvas */
-export interface Drawer {
+export interface DrawerInterface {
     /**
      * Draws an empty square
      *
