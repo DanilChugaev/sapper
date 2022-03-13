@@ -1,5 +1,5 @@
 import { MapStructure, BuilderInterface } from '../builder/types';
-import { ColorInterface } from '../engine/color/types';
+import { UIInterface } from '../engine/ui/types';
 import { ContextInterface } from '../engine/context/types';
 import { CustomProperties, DomInterface } from '../engine/dom/types';
 import { DrawerInterface } from '../engine/drawer/types';
@@ -70,7 +70,7 @@ export class Sapper implements GameInterface {
      * @param builderInstance - responsible for creating levels
      * @param mathInstance - math number generator
      * @param storageInstance - long-term storage of game data
-     * @param colorInstance - to control the colors in the game
+     * @param uiInstance - to control the UI in the game
      */
     constructor(
         private settings: GameSettings,
@@ -80,7 +80,7 @@ export class Sapper implements GameInterface {
         private builderInstance: BuilderInterface,
         private mathInstance: MathInterface,
         private storageInstance: StorageInterface,
-        private colorInstance: ColorInterface,
+        private uiInstance: UIInterface,
     ) {
       this.select = <HTMLSelectElement>domInstance.getElement('select-level');
       this.startGameButton = domInstance.getElement('start-game');
@@ -94,7 +94,7 @@ export class Sapper implements GameInterface {
       this.timerContainer = domInstance.getElement('timer');
       this.currentTimeContainer = domInstance.getElement('current-time-container');
       this.bestTimeContainer = domInstance.getElement('best-time-container');
-      this.colors = this.colorInstance.getColor;
+      this.colors = this.uiInstance.getColor;
     }
 
     /** Initializes game engine after the DOM has loaded */

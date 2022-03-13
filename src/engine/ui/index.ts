@@ -1,8 +1,8 @@
 import { CustomProperties, DomInterface } from '../dom/types';
-import { ColorInterface } from './types';
+import { UIInterface } from './types';
 
 /** Class to control the colors in the game */
-export class ColorClass implements ColorInterface {
+export class UIClass implements UIInterface {
   /** Variables from `:root` declaration */
   private customProperties: CustomProperties;
 

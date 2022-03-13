@@ -1,6 +1,6 @@
 import { container } from './core';
 
-import '../color/di-register';
+import '../ui/di-register';
 import '../context/di-register';
 import '../dom/di-register';
 import '../drawer/di-register';

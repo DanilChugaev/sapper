@@ -1,4 +1,4 @@
-import { ColorInterface } from '../color/types';
+import { UIInterface } from '../ui/types';
 import { CanvasContext, ContextInterface } from '../context/types';
 import { CustomProperties } from '../dom/types';
 import { SourceInterface } from '../source/types';
@@ -21,12 +21,12 @@ export class DrawerClass implements DrawerInterface {
   /**
    * @param contextInstance - provides the context of the canvas
    * @param sourceInstance - to interact with the file system
-   * @param colorInstance - to control the colors in the game
+   * @param uiInstance - to control the UI in the game
    */
   constructor(
     private contextInstance: ContextInterface,
     private sourceInstance: SourceInterface,
-    private colorInstance: ColorInterface,
+    private uiInstance: UIInterface,
   ) {
     this.context = this.contextInstance.getInstance();
 
@@ -36,7 +36,7 @@ export class DrawerClass implements DrawerInterface {
 
     this.bomb = this.sourceInstance.getImage('bomb');
     this.flag = this.sourceInstance.getImage('flag');
-    this.colors = this.colorInstance.getColor;
+    this.colors = this.uiInstance.getColor;
   }
 
   /**
