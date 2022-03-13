@@ -1,7 +1,7 @@
 import { MapStructure, BuilderInterface } from '../builder/types';
+import { ColorInterface } from '../engine/color/types';
 import { ContextInterface } from '../engine/context/types';
-import { DomInterface } from '../engine/dom/types';
-import { INITIAL_FIELD_BG_COLOR, MAIN_BG_COLOR } from '../engine/drawer/constants';
+import { CustomProperties, DomInterface } from '../engine/dom/types';
 import { DrawerInterface } from '../engine/drawer/types';
 import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../engine/settings/types';
@@ -59,6 +59,9 @@ export class Sapper implements GameInterface {
     /** Number of correctly allocated bombs */
     private countCorrectlySelectedBombs = 0;
 
+    /** Color variables from custom properties */
+    private colors: CustomProperties;
+
     /**
      * @param settings - basic game settings
      * @param contextInstance - provides the context of the canvas
@@ -67,6 +70,7 @@ export class Sapper implements GameInterface {
      * @param builderInstance - responsible for creating levels
      * @param mathInstance - math number generator
      * @param storageInstance - long-term storage of game data
+     * @param colorInstance - to control the colors in the game
      */
     constructor(
         private settings: GameSettings,
@@ -76,6 +80,7 @@ export class Sapper implements GameInterface {
         private builderInstance: BuilderInterface,
         private mathInstance: MathInterface,
         private storageInstance: StorageInterface,
+        private colorInstance: ColorInterface,
     ) {
       this.select = <HTMLSelectElement>domInstance.getElement('select-level');
       this.startGameButton = domInstance.getElement('start-game');
@@ -89,6 +94,7 @@ export class Sapper implements GameInterface {
       this.timerContainer = domInstance.getElement('timer');
       this.currentTimeContainer = domInstance.getElement('current-time-container');
       this.bestTimeContainer = domInstance.getElement('best-time-container');
+      this.colors = this.colorInstance.getColor;
     }
 
     /** Initializes game engine after the DOM has loaded */
@@ -238,7 +244,7 @@ export class Sapper implements GameInterface {
       this.drawerInstance.drawSquare({
         x: 0,
         y: 0,
-      }, size, INITIAL_FIELD_BG_COLOR);
+      }, size, this.colors.FIELD_BG_COLOR);
     }
 
     /**
@@ -341,7 +347,7 @@ export class Sapper implements GameInterface {
       this.drawerInstance.drawSquare({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
-      }, this.cellPixelsSize, MAIN_BG_COLOR);
+      }, this.cellPixelsSize, this.colors.MAIN_BG_COLOR);
 
       cell.isOpen = true;
       this.system.usedCells++;
@@ -424,7 +430,7 @@ export class Sapper implements GameInterface {
       this.drawerInstance.drawSquare({
         x: this.calcPixelCoord(cell.x),
         y: this.calcPixelCoord(cell.y),
-      }, this.cellPixelsSize, INITIAL_FIELD_BG_COLOR, false);
+      }, this.cellPixelsSize, this.colors.FIELD_BG_COLOR, false);
 
       cell.hasFlag = false;
       this.system.usedCells--;

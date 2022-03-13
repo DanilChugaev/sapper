@@ -1,3 +1,5 @@
+export type CustomProperties = Nullable<{ [key: string] : string }>;
+
 /** Allows interact with the DOM tree */
 export interface DomInterface {
     /**
@@ -20,4 +22,9 @@ export interface DomInterface {
      * @param callback - function that is called after loading the DOM tree
      */
     afterLoad(callback: () => void): void;
+
+    /**
+     * Returns custom properties from `:root` declaration
+     */
+    getCustomProperties(): CustomProperties;
 }

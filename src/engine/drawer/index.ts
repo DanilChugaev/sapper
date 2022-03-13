@@ -1,6 +1,7 @@
+import { ColorInterface } from '../color/types';
 import { CanvasContext, ContextInterface } from '../context/types';
+import { CustomProperties } from '../dom/types';
 import { SourceInterface } from '../source/types';
-import { MAIN_BG_COLOR, INITIAL_FIELD_BG_COLOR, TEXT_COLOR, FLAG_BG_COLOR, BORDER_COLOR } from './constants';
 import { DrawerInterface } from './types';
 
 /** Class implements painting on canvas */
@@ -14,21 +15,28 @@ export class DrawerClass implements DrawerInterface {
   /** Flag image */
   private flag: CanvasImageSource;
 
+  /** Color variables from custom properties */
+  private colors: CustomProperties;
+
   /**
    * @param contextInstance - provides the context of the canvas
    * @param sourceInstance - to interact with the file system
+   * @param colorInstance - to control the colors in the game
    */
   constructor(
     private contextInstance: ContextInterface,
     private sourceInstance: SourceInterface,
+    private colorInstance: ColorInterface,
   ) {
     this.context = this.contextInstance.getInstance();
+
     if (!this.context) {
       throw new Error('Failed to access the drawing context.');
     }
 
     this.bomb = this.sourceInstance.getImage('bomb');
     this.flag = this.sourceInstance.getImage('flag');
+    this.colors = this.colorInstance.getColor;
   }
 
   /**
@@ -64,11 +72,11 @@ export class DrawerClass implements DrawerInterface {
    * @param value - number to draw
    */
   public drawNumber({ x, y }: Cell, size: PixelsAmount, value: number): void {
-    this.drawSquare({ x, y }, size, MAIN_BG_COLOR);
+    this.drawSquare({ x, y }, size, this.colors.MAIN_BG_COLOR);
 
     /** font size should be less than the size of the square */
     this.context.font = `${size / 2}px Arial`;
-    this.context.fillStyle = TEXT_COLOR;
+    this.context.fillStyle = this.colors.TEXT_COLOR;
 
     /** since the number is stretched upwards, for centering, we divide the width by a larger number than the height */
     this.context.fillText(value.toString(), x + (size / 2.5), y + (size / 1.5));
@@ -83,7 +91,7 @@ export class DrawerClass implements DrawerInterface {
    * @param size - square size in pixels
    */
   public drawBomb({ x, y }: Cell, size: PixelsAmount): void {
-    this.drawSquare({ x, y }, size, INITIAL_FIELD_BG_COLOR, false);
+    this.drawSquare({ x, y }, size, this.colors.FIELD_BG_COLOR, false);
 
     const imageSize: number = this.getImageSize(size);
 
@@ -99,7 +107,7 @@ export class DrawerClass implements DrawerInterface {
    * @param size - square size in pixels
    */
   public drawFlag({ x, y }: Cell, size: PixelsAmount): void {
-    this.drawSquare({ x, y }, size, FLAG_BG_COLOR, false);
+    this.drawSquare({ x, y }, size, this.colors.FLAG_BG_COLOR, false);
 
     const imageSize: number = this.getImageSize(size);
 
@@ -134,7 +142,7 @@ export class DrawerClass implements DrawerInterface {
    * @param size - square size in pixels
    */
   private drawBorders({ x, y }: Cell, size: PixelsAmount): void {
-    this.context.strokeStyle = BORDER_COLOR;
+    this.context.strokeStyle = this.colors.BORDER_COLOR;
     this.context.strokeRect(x, y, size, size);
   }
 }
