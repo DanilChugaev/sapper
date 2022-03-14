@@ -1,6 +1,5 @@
-import { UIInterface } from '../ui/types';
+import { UIInterface, CustomProperties } from '../ui/types';
 import { CanvasContext, ContextInterface } from '../context/types';
-import { CustomProperties } from '../dom/types';
 import { SourceInterface } from '../source/types';
 import { DrawerInterface } from './types';
 
@@ -36,7 +35,7 @@ export class DrawerClass implements DrawerInterface {
 
     this.bomb = this.sourceInstance.getImage('bomb');
     this.flag = this.sourceInstance.getImage('flag');
-    this.colors = this.uiInstance.getColor;
+    this.colors = this.uiInstance.getColors;
   }
 
   /**
@@ -75,7 +74,7 @@ export class DrawerClass implements DrawerInterface {
     this.drawSquare({ x, y }, size, this.colors.MAIN_BG_COLOR);
 
     /** font size should be less than the size of the square */
-    this.context.font = `${size / 2}px Arial`;
+    this.context.font = `${size / 2}px ${this.uiInstance.getFont}`;
     this.context.fillStyle = this.colors.TEXT_COLOR;
 
     /** since the number is stretched upwards, for centering, we divide the width by a larger number than the height */

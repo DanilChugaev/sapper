@@ -1,7 +1,7 @@
 import { MapStructure, BuilderInterface } from '../builder/types';
-import { UIInterface } from '../engine/ui/types';
+import { UIInterface, CustomProperties } from '../engine/ui/types';
 import { ContextInterface } from '../engine/context/types';
-import { CustomProperties, DomInterface } from '../engine/dom/types';
+import { DomInterface } from '../engine/dom/types';
 import { DrawerInterface } from '../engine/drawer/types';
 import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../engine/settings/types';
@@ -94,7 +94,7 @@ export class Sapper implements GameInterface {
       this.timerContainer = domInstance.getElement('timer');
       this.currentTimeContainer = domInstance.getElement('current-time-container');
       this.bestTimeContainer = domInstance.getElement('best-time-container');
-      this.colors = this.uiInstance.getColor;
+      this.colors = this.uiInstance.getColors;
     }
 
     /** Initializes game engine after the DOM has loaded */
