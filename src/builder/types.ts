@@ -1,4 +1,4 @@
-import { GameSettings } from '../engine/settings/types';
+import { GameSettings } from '../settings/types';
 
 /** Structure of the field of the selected level of difficulty */
 export type MapStructure = {

@@ -2,9 +2,9 @@ import { MapStructure, BuilderInterface } from '../builder/types';
 import { UIInterface, CustomProperties } from '../engine/ui/types';
 import { ContextInterface } from '../engine/context/types';
 import { DomInterface } from '../engine/dom/types';
-import { DrawerInterface } from '../engine/drawer/types';
+import { DrawerInterface } from '../drawer/types';
 import { MathInterface } from '../engine/math/types';
-import { GameSettings } from '../engine/settings/types';
+import { GameSettings } from '../settings/types';
 import { StorageInterface } from '../engine/storage/types';
 import { GameInterface } from './types';
 

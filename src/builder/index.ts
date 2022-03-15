@@ -1,4 +1,4 @@
-import { Complexity, ComplexityList, GameSettings } from '../engine/settings/types';
+import { Complexity, ComplexityList, GameSettings } from '../settings/types';
 import { AreaStructure, MapStructure, BuilderInterface } from './types';
 import { AREA_STRUCTURE } from './constants';
 import { MathInterface } from '../engine/math/types';

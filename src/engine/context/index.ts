@@ -1,5 +1,5 @@
 import { DomInterface } from '../dom/types';
-import { GameSettings } from '../settings/types';
+import { GameSettings } from '../../settings/types';
 import { CanvasContext, ContextInterface } from './types';
 
 /** Provides the context of the canvas */

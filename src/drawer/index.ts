@@ -1,6 +1,6 @@
-import { UIInterface, CustomProperties } from '../ui/types';
-import { CanvasContext, ContextInterface } from '../context/types';
-import { SourceInterface } from '../source/types';
+import { UIInterface, CustomProperties } from '../engine/ui/types';
+import { CanvasContext, ContextInterface } from '../engine/context/types';
+import { SourceInterface } from '../engine/source/types';
 import { DrawerInterface } from './types';
 
 /** Class implements painting on canvas */
