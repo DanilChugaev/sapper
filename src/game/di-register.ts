@@ -1,4 +1,4 @@
-import { container } from '../di-register';
+import { container } from '../di/register';
 import { GameInterface } from './types';
 import { Sapper } from './index';
 
