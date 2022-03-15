@@ -1,9 +1,14 @@
 import { DomInterface } from '../dom/types';
-import { GameSettings } from '../../settings/types';
 import { CanvasContext, ContextInterface } from './types';
 
 /** Provides the context of the canvas */
 export class ContextClass implements ContextInterface {
+  /** Size of the field in pixels */
+  private canvasSize: number;
+
+  /** The ratio of the display resolution of the current device in physical pixels to the resolution in logical (CSS) pixels */
+  private devicePixelRatio: number;
+
   /** Game will be drawn on this canvas */
   private canvas: Nullable<HTMLCanvasElement> = null;
 
@@ -12,11 +17,9 @@ export class ContextClass implements ContextInterface {
 
   /**
    * @param domInstance - allows interact with the DOM tree
-   * @param settings - basic game settings
    */
   constructor(
     private domInstance: DomInterface,
-    private settings: GameSettings,
   ) {
     const canvas = this.domInstance.getElement('canvas');
 
@@ -26,6 +29,18 @@ export class ContextClass implements ContextInterface {
 
     this.canvas = canvas as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d');
+  }
+
+  /**
+   * Init context instance
+   *
+   * @param canvasSize - size of the field in pixels
+   * @param devicePixelRatio - the ratio of the display resolution
+   */
+  public init(canvasSize: number, devicePixelRatio: number): void {
+    this.canvasSize = canvasSize;
+    this.devicePixelRatio = devicePixelRatio;
+
     this.normalizeScale();
   }
 
@@ -58,8 +73,8 @@ export class ContextClass implements ContextInterface {
       return;
     }
 
-    const ratio = this.settings.devicePixelRatio || 1;
-    const size: PixelsAmount = this.settings.canvasSize;
+    const ratio = this.devicePixelRatio || 1;
+    const size: PixelsAmount = this.canvasSize;
 
     this.canvas.width = size * ratio;
     this.canvas.height = size * ratio;

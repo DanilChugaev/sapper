@@ -2,6 +2,7 @@ import { UIInterface, CustomProperties } from '../engine/ui/types';
 import { CanvasContext, ContextInterface } from '../engine/context/types';
 import { SourceInterface } from '../engine/source/types';
 import { DrawerInterface } from './types';
+import { GameSettings } from '../settings/types';
 
 /** Class implements painting on canvas */
 export class DrawerClass implements DrawerInterface {
@@ -21,12 +22,15 @@ export class DrawerClass implements DrawerInterface {
    * @param contextInstance - provides the context of the canvas
    * @param sourceInstance - to interact with the file system
    * @param uiInstance - to control the UI in the game
+   * @param settings - basic game settings
    */
   constructor(
     private contextInstance: ContextInterface,
     private sourceInstance: SourceInterface,
     private uiInstance: UIInterface,
+    private settings: GameSettings,
   ) {
+    this.contextInstance.init(this.settings.canvasSize, this.settings.devicePixelRatio);
     this.context = this.contextInstance.getInstance();
 
     if (!this.context) {

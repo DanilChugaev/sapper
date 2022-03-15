@@ -3,6 +3,8 @@ export type CanvasContext = Nullable<CanvasRenderingContext2D>;
 
 /** Provides the context of the canvas */
 export interface ContextInterface {
+  init(canvasSize: number, devicePixelRatio: number): void;
+
   /** Returns canvas 2d context */
   getInstance(): CanvasContext;
 

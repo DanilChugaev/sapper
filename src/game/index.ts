@@ -95,6 +95,8 @@ export class Sapper implements GameInterface {
       this.currentTimeContainer = domInstance.getElement('current-time-container');
       this.bestTimeContainer = domInstance.getElement('best-time-container');
       this.colors = this.uiInstance.getColors;
+
+      this.contextInstance.init(this.settings.canvasSize, this.settings.devicePixelRatio);
     }
 
     /** Initializes game engine after the DOM has loaded */
