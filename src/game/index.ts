@@ -1,11 +1,14 @@
-import { MapStructure, BuilderInterface } from '../builder/types';
-import { UIInterface, CustomProperties } from '../engine/ui/types';
-import { ContextInterface } from '../engine/context/types';
-import { DomInterface } from '../engine/dom/types';
+
+import { UIInterface, CustomProperties } from 'just-engine/src/ui/types';
+import { StorageInterface } from 'just-engine/src/storage/types';
+import { ContextInterface } from 'just-engine/src/context/types';
+import { DomInterface } from 'just-engine/src/dom/types';
+import { MathInterface } from 'just-engine/src/math/types';
+
 import { DrawerInterface } from '../drawer/types';
-import { MathInterface } from '../engine/math/types';
 import { GameSettings } from '../settings/types';
-import { StorageInterface } from '../engine/storage/types';
+import { MapStructure, BuilderInterface } from '../builder/types';
+
 import { GameInterface } from './types';
 
 /** The main class of the game */

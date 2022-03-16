@@ -33,10 +33,10 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               getCustomTransformers: (program) => di({ program }),
+              allowTsInNodeModules: true,
             },
           },
         ],
-        exclude: /node_modules/,
       },
     ],
   },

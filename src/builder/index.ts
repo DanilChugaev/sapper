@@ -1,7 +1,8 @@
+import { MathInterface } from 'just-engine/src/math/types';
+
 import { Complexity, ComplexityList, GameSettings } from '../settings/types';
 import { AreaStructure, MapStructure, BuilderInterface } from './types';
 import { AREA_STRUCTURE } from './constants';
-import { MathInterface } from '../engine/math/types';
 
 /** Class responsible for creating levels based on levels settings */
 export class BuilderClass implements BuilderInterface {

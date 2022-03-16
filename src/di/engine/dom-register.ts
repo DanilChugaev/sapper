@@ -1,5 +1,6 @@
+import { DomInterface } from 'just-engine/src/dom/types';
+import { DomClass } from 'just-engine/src/dom/index';
+
 import { container } from '../register';
-import { DomInterface } from '../../engine/dom/types';
-import { DomClass } from '../../engine/dom/index';
 
 container.registerSingleton<DomInterface, DomClass>();
