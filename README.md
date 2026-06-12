@@ -74,12 +74,15 @@ To generate production build
  npm run build
 ```
 
-## Lint project
+## Deploy to GitHub Pages
 
-To lint code in project
+The project is automatically deployed to GitHub Pages on every push to the `main` branch via GitHub Actions.
+
+For manual deployment use:
 
 ```bash
- npm run lint
+npm install
+npm run deploy
 ```
 
 ## License
